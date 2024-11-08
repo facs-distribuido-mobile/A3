@@ -1,0 +1,19 @@
+{
+  "name": "a3",
+  "version": "1.0.0",
+  "description": "Trabalho A3 da UC Sistemas Distribuídos e Mobile - profs. Adailton e Marivaldo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facs-distribuido-mobile/A3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/facs-distribuido-mobile/A3/issues"
+  },
+  "homepage": "https://github.com/facs-distribuido-mobile/A3#readme"
+}
