@@ -29,7 +29,7 @@ module.exports = app => {
 
         try {
             ClienteDao.adicionar(novoCliente);
-            res.status(200).send(`Item cadastrado com sucesso:
+            res.status(200).send(`Cliente cadastrado com sucesso:
                                     nome: ${novoCliente.nome},
                                     CPF: ${novoCliente.cpf},
                                     email: ${novoCliente.email}`);
