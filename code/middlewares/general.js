@@ -22,10 +22,17 @@
         return result;
     }
 
+    function decimalsToInt(doubleString) {
+        let tempString =  doubleString.replace(",", ".");
+        let intNum = Number(tempString).toFixed();
+        return intNum;
+    }
+
     module.exports = {
         verificaPositivo,
         verificaZero,
         verificaNegativo,
         realToCents,
-        centsToReal
+        centsToReal,
+        decimalsToInt
     }

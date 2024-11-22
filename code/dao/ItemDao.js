@@ -48,9 +48,9 @@ class ItemDao {
         let sql = '';
 
             if(item.id !== undefined) {
-                sql = `UPDATE estoque SET nome = '${item.nome.trim()}', preco = ${middleware.realToCents(item.preco)}, unidades = ${item.unidades} WHERE id = ${item.id}`
+                sql = `UPDATE estoque SET nome = '${item.nome.trim()}', preco = ${middleware.realToCents(item.preco)}, unidades = ${middleware.decimalsToInt(item.unidades)} WHERE id = ${item.id}`
             } else {
-                sql = `INSERT INTO estoque(nome, preco, unidades) VALUES('${item.nome.trim()}', ${middleware.realToCents(item.preco)}, ${item.unidades})`;
+                sql = `INSERT INTO estoque(nome, preco, unidades) VALUES('${item.nome.trim()}', ${middleware.realToCents(item.preco)}, ${middleware.decimalsToInt(item.unidades)})`;
             }
 
         DbConnection.createConnection().query(sql);

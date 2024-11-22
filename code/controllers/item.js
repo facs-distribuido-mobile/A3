@@ -32,15 +32,15 @@ module.exports = app => {
             res.status(400).send(`Os campos nome, preço e unidades são obrigatórios`)
         } else if (middleware.verificaNegativo(middleware.realToCents(newItem.preco))) {
             res.status(400).send(`O campo preço não pode ser negativo!`)
-        } else if (middleware.verificaNegativo(middleware.realToCents(newItem.unidades))) {
+        } else if (middleware.verificaNegativo(newItem.unidades)) {
             res.status(400).send(`O campos unidades não pode ser negativo!`)
         } else {
             try {
                 ItemDao.adicionar(newItem);
                 res.status(200).send(`Item cadastrado com sucesso:
-                                        nome: ${newItem.nome},
-                                        preço: ${newItem.preco},
-                                        unidades: ${newItem.unidades}`);
+                                        nome: ${newItem.nome.trim()},
+                                        preço: ${newItem.preco.trim()},
+                                        unidades: ${middleware.decimalsToInt(newItem.unidades.trim())}`);
             } catch (err) {
                 res.status(500).send(`Erro: ${err.message}`)
             }
