@@ -4,7 +4,8 @@
   "description": "Trabalho A3 da UC Sistemas Distribuídos e Mobile - profs. Adailton e Marivaldo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./code/index.js"
   },
   "repository": {
     "type": "git",

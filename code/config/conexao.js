@@ -1,12 +1,14 @@
 const sql = require('mysql');
 
-const DbConnection = sql.createConnection(
-    {
-        host: 'localhost',
-        user: 'admin',
-        password: 'secret',
-        database: 'my_db'
+class DbConnection {
+    createConnection(){
+        return sql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'database'
+        })
     }
-)
+}
 
-module.exports = DbConnection;
+module.exports = new DbConnection();
