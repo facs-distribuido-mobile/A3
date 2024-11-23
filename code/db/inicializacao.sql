@@ -44,3 +44,84 @@ CREATE TABLE IF NOT EXISTS vendas_detalhes (
 	FOREIGN KEY(id_venda) REFERENCES vendas(id),
 	FOREIGN KEY(id_item) REFERENCES itens(id)
 );
+
+INSERT INTO clientes (nome, cpf, email) 
+VALUES ('Otávio Anderson Davi dos Santos', '71072741121', 'otavio_anderson_dossantos@directnet.com.br');
+
+INSERT INTO clientes (nome, cpf, email) 
+VALUES ('Helena Eloá Alessandra da Cunha', '33620033625', 'helenaeloadacunha@likaleal.com.br');
+
+INSERT INTO clientes (nome, cpf, email) 
+VALUES ('Bryan Diego Sérgio Aparício', '38795350942', 'bryan.diego.aparicio@galvao.com');
+
+INSERT INTO clientes (nome, cpf, email) 
+VALUES ('Liz Luzia Milena Farias', '09615376396', 'liz_luzia_farias@vitacard.com.br');
+
+INSERT INTO clientes (nome, cpf, email) 
+VALUES ('Antonio Arthur Roberto Moraes', '75315419126', 'antonio.arthur.moraes@athoscontabil.com.br');
+
+INSERT INTO vendedores (nome, cpf) 
+VALUES ('Andreia Heloise Rezende', '66521905910');
+
+INSERT INTO vendedores (nome, cpf) 
+VALUES ('Nair Rosângela Olivia Mendes', '01863784756');
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Suplemento Nutricional', 49.35);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (1, 31);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Creme Dental ', 20.00);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (2, 48);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Vitaminas C e D', 42.28);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (3, 8);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Pacote de Fraldas', 62.45);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (4, 67);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Curativo Adesivo', 5.25);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (5, 4);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Shampoo e Condicionador', 78.55);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (6, 88);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Protetor Solar', 84.29);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (7, 63);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Álcool 70%', 6.27);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (8, 71);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Analgésico ', 20.27);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (9, 11);
+
+INSERT INTO itens (nome, preco) 
+VALUES ('Creme hidratante', 27.68);
+
+INSERT INTO estoque (id_item, quantidade_atual) 
+VALUES (10, 52);

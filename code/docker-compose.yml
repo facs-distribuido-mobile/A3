@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
       TZ: "America/Bahia"
     command: >
       --default-authentication-plugin=mysql_native_password
@@ -25,3 +27,4 @@ volumes:
 
 networks:
   app-network:
+    driver: bridge
