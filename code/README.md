@@ -1,6 +1,6 @@
 # Instruções
 
-Para ativar o ambiente docker utilize o comando:
+Para ativar o ambiente docker, utilize o comando (nesta pasta!):
 
 ```
 docker compose up -d
