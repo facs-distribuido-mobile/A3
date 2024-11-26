@@ -2,7 +2,7 @@ const ItemDao = require('../dao/ItemDao');
 const middleware = require('../middlewares/general');
 
 module.exports = app => {
-    app.get('/estoque', (req, res) => {
+    app.get('/item', (req, res) => {
         ItemDao.all((err, item) => {
             res.header("Access-Control-Allow-Origin", "*");
             if(err === null) {
@@ -13,7 +13,7 @@ module.exports = app => {
         })
     })
 
-    app.get('/estoque/:id', (req, res) => {
+    app.get('/item/:id', (req, res) => {
         let idNum = req.params.id;
 
         ItemDao.get(idNum, (err, item) => {
@@ -25,10 +25,10 @@ module.exports = app => {
         })
     })
 
-    app.post('/estoque', (req, res) => {
+    app.post('/item', (req, res) => {
         const newItem = req.body;
 
-        if(!newItem.nome.trim() || Number(!newItem.preco.trim()) || Number(!newItem.unidades.trim())) {
+        if(!newItem.nome.trim() || Number(!newItem.preco.trim())) {
             res.status(400).send(`Os campos nome, preço e unidades são obrigatórios`)
         } else if (middleware.verificaNegativo(middleware.realToCents(newItem.preco))) {
             res.status(400).send(`O campo preço não pode ser negativo!`)
@@ -39,15 +39,14 @@ module.exports = app => {
                 ItemDao.adicionar(newItem);
                 res.status(200).send(`Item cadastrado com sucesso:
                                         nome: ${newItem.nome.trim()},
-                                        preço: ${newItem.preco.trim()},
-                                        unidades: ${middleware.decimalsToInt(newItem.unidades.trim())}`);
+                                        preço: ${newItem.preco.trim()}`);
             } catch (err) {
                 res.status(500).send(`Erro: ${err.message}`)
             }
         }
     })
 
-    app.delete('/estoque/:id', (req, res) => {
+    app.delete('/item/:id', (req, res) => {
         let idNum = req.params.id;
 
         ItemDao.delete(idNum, (err, item) => {

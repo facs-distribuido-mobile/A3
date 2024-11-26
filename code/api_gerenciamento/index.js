@@ -6,13 +6,13 @@ app.use(express.json());
 const portNum = 3000;
 
 consign()
-    .include('./code/controllers')
+    .include('./controllers')
     .into(app);
 
 app.listen(portNum, () => {
     console.log(`Servidor rodando na porta ${portNum}`);
-})
+});
 
 app.get('/', (req, res) => {
     res.status(200).send(`Servidor rodando!`);
-})
+});

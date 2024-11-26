@@ -5,7 +5,7 @@ const {realToCents, centsToReal} = require("../middlewares/general");
 class ItemDao {
 
     total(callback) {
-        let sql = `SELECT count(*) as count FROM estoque`;
+        let sql = `SELECT count(*) as count FROM itens`;
 
         DbConnection.createConnection().query(sql, [], (err, total) => {
             if (err || total === undefined) {
@@ -17,7 +17,7 @@ class ItemDao {
     }
 
     all(callback) {
-        let sql = `SELECT * FROM estoque`;
+        let sql = `SELECT * FROM itens`;
 
         DbConnection.createConnection().query(sql, [], (err, itens) => {
             if(err || itens === undefined) {
@@ -32,7 +32,7 @@ class ItemDao {
     }
 
     get(id, callback) {
-        let sql = `SELECT * FROM estoque WHERE id = ?`;
+        let sql = `SELECT * FROM itens WHERE id = ?`;
 
         DbConnection.createConnection().query(sql, [id], (err, itens) => {
             if(err || itens.length === 0) {
@@ -48,16 +48,16 @@ class ItemDao {
         let sql = '';
 
             if(item.id !== undefined) {
-                sql = `UPDATE estoque SET nome = '${item.nome.trim()}', preco = ${middleware.realToCents(item.preco)}, unidades = ${middleware.decimalsToInt(item.unidades)} WHERE id = ${item.id}`
+                sql = `UPDATE itens SET nome = '${item.nome.trim()}', preco = ${middleware.realToCents(item.preco)} WHERE id = ${item.id}`
             } else {
-                sql = `INSERT INTO estoque(nome, preco, unidades) VALUES('${item.nome.trim()}', ${middleware.realToCents(item.preco)}, ${middleware.decimalsToInt(item.unidades)})`;
+                sql = `INSERT INTO itens(nome, preco) VALUES('${item.nome.trim()}', ${middleware.realToCents(item.preco)})`;
             }
 
         DbConnection.createConnection().query(sql);
     }
 
     delete(id, callback) {
-        let sql = `DELETE FROM estoque WHERE id = ?`;
+        let sql = `DELETE FROM itens WHERE id = ?`;
 
         DbConnection.createConnection().query(sql, [id], (err, item) => {
             if(err || item.affectedRows === 0) {
