@@ -1,9 +1,10 @@
-const sql = require('mysql');
+const mySql = require('mysql');
 require('dotenv').config();
 
 class DbConnection {
+
     createConnection(){
-        return sql.createConnection({
+        return mySql.createConnection({
             host: process.env.MYSQL_HOST,
             user: process.env.MYSQL_ROOT,
             password: process.env.MYSQL_ROOT_PASSWORD,
@@ -12,5 +13,13 @@ class DbConnection {
         });
     }
 }
+
+new DbConnection().createConnection().connect((err) => {
+    if(err) {
+        console.error(`Erro ao conectar o banco de dados`, err);
+        throw err;
+    }
+    console.log(`Conectado ao banco de dados`);
+})
 
 module.exports = new DbConnection();
