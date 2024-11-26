@@ -1,4 +1,4 @@
-module.exports = class Itens {
+module.exports = class Item {
     constructor(nome, preco, unidades) {
         if(nome.trim()) {
             this.nome = nome.trim();

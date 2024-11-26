@@ -46,13 +46,13 @@ CREATE TABLE IF NOT EXISTS vendas_detalhes (
 );
 
 INSERT INTO clientes (nome, cpf, email)
-VALUES ('Otavio Anderson Davi dos Santos', '71072741121', 'otavio_anderson_dossantos@directnet.com.br');
+VALUES ('Otávio Anderson Davi dos Santos', '71072741121', 'otavio_anderson_dossantos@directnet.com.br');
 
 INSERT INTO clientes (nome, cpf, email)
-VALUES ('Helena Eloa Alessandra da Cunha', '33620033625', 'helenaeloadacunha@likaleal.com.br');
+VALUES ('Helena Eloá Alessandra da Cunha', '33620033625', 'helenaeloadacunha@likaleal.com.br');
 
 INSERT INTO clientes (nome, cpf, email)
-VALUES ('Bryan Diego Sergio Aparicio', '38795350942', 'bryan.diego.aparicio@galvao.com');
+VALUES ('Bryan Diego Sérgio Aparécio', '38795350942', 'bryan.diego.aparicio@galvao.com');
 
 INSERT INTO clientes (nome, cpf, email)
 VALUES ('Liz Luzia Milena Farias', '09615376396', 'liz_luzia_farias@vitacard.com.br');
@@ -64,7 +64,7 @@ INSERT INTO vendedores (nome, cpf)
 VALUES ('Andreia Heloise Rezende', '66521905910');
 
 INSERT INTO vendedores (nome, cpf)
-VALUES ('Nair Rosangela Olivia Mendes', '01863784756');
+VALUES ('Nair Rosângela Olivia Mendes', '01863784756');
 
 INSERT INTO itens (nome, preco)
 VALUES ('Suplemento Nutricional', 4935);
@@ -109,13 +109,13 @@ INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (7, 63);
 
 INSERT INTO itens (nome, preco)
-VALUES ('Alcool 70%', 627);
+VALUES ('Álcool 70%', 627);
 
 INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (8, 71);
 
 INSERT INTO itens (nome, preco)
-VALUES ('Analgesico ', 2027);
+VALUES ('Analgésico ', 2027);
 
 INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (9, 11);

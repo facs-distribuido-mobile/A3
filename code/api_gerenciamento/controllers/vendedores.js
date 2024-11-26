@@ -1,5 +1,5 @@
 const vendedoresDao = require('../dao/vendedoresDao');
-const Vendedores = require('../models/Vendedores');
+const Vendedores = require('../models/Vendedor');
 
 const vendedores = {
     create: (req, res) => {
