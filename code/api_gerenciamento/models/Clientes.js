@@ -1,4 +1,4 @@
-module.exports = class Cliente {
+module.exports = class Clientes {
     constructor(nome, cpf, email) {
         this.nome = nome;
         this.cpf = cpf;

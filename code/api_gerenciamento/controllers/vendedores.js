@@ -1,7 +1,7 @@
-const vendedorDao = require('../dao/vendedoresDao');
+const vendedoresDao = require('../dao/vendedoresDao');
 const Vendedores = require('../models/Vendedores');
 
-const vendedor = {
+const vendedores = {
     create: (req, res) => {
         const { nome, cpf } = req.body;
 
@@ -19,7 +19,7 @@ const vendedor = {
         }
 
         // Verificar se o CPF já existe
-        vendedorDao.checkCpfExists(cpf, (err, results) => {
+        vendedoresDao.checkCpfExists(cpf, (err, results) => {
             if (err) {
                 console.error('Erro ao verificar CPF:', err);
                 return res.status(500).json({ message: 'Erro ao verificar CPF.' });
@@ -30,19 +30,19 @@ const vendedor = {
             }
 
             // Inserir vendedor
-            vendedorDao.create(nome, cpf, (err, result) => {
+            vendedoresDao.create(nome, cpf, (err, result) => {
                 if (err) {
                     console.error('Erro ao criar vendedor:', err);
                     return res.status(500).json({ message: 'Erro ao criar vendedor.' });
                 }
-                res.status(201).json({ message: 'Vendedores cadastrado com sucesso.', id: result.insertId });
+                res.status(201).json({ message: 'Vendedor cadastrado com sucesso.', id: result.insertId });
             });
         });
     },
 
     // Listar todos os vendedores
     getAll: (req, res) => {
-        vendedorDao.getAll((err, results) => {
+        vendedoresDao.getAll((err, results) => {
             if (err) {
                 console.error('Erro ao listar vendedores:', err);
                 return res.status(500).json({ message: 'Erro ao listar vendedores.' });
@@ -55,14 +55,14 @@ const vendedor = {
     getById: (req, res) => {
         const { id } = req.params;
 
-        vendedorDao.getById(id, (err, results) => {
+        vendedoresDao.getById(id, (err, results) => {
             if (err) {
                 console.error('Erro ao buscar vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao buscar vendedor.' });
             }
 
             if (results.length === 0) {
-                return res.status(404).json({ message: 'Vendedores não encontrado.' });
+                return res.status(404).json({ message: 'Vendedor não encontrado.' });
             }
 
             res.status(200).json(results[0]);
@@ -85,12 +85,12 @@ const vendedor = {
             });
         }
 
-        vendedorDao.update(id, nome, cpf, (err) => {
+        vendedoresDao.update(id, nome, cpf, (err) => {
             if (err) {
                 console.error('Erro ao atualizar vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao atualizar vendedor.' });
             }
-            res.status(200).json({ message: 'Vendedores atualizado com sucesso.' });
+            res.status(200).json({ message: 'Vendedor atualizado com sucesso.' });
         });
     },
 
@@ -98,20 +98,20 @@ const vendedor = {
     delete: (req, res) => {
         const { id } = req.params;
 
-        vendedorDao.delete(id, (err) => {
+        vendedoresDao.delete(id, (err) => {
             if (err) {
                 console.error('Erro ao excluir vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao excluir vendedor.' });
             }
-            res.status(200).json({ message: 'Vendedores excluído com sucesso.' });
+            res.status(200).json({ message: 'Vendedor excluído com sucesso.' });
         });
     }
 };
 
 module.exports = app => {
-    app.get('/vendedores', vendedor.getAll);
-    app.get('/vendedores/:id', vendedor.getById);
-    app.post('/vendedores', vendedor.create);
-    app.put('/vendedores/:id', vendedor.update);
-    app.delete('/vendedores/:id', vendedor.delete);
+    app.get('/vendedores', vendedores.getAll);
+    app.get('/vendedores/:id', vendedores.getById);
+    app.post('/vendedores', vendedores.create);
+    app.put('/vendedores/:id', vendedores.update);
+    app.delete('/vendedores/:id', vendedores.delete);
 };

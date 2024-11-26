@@ -1,8 +1,8 @@
-const ClienteDao = require('../dao/ClientesDao');
+const ClientesDao = require('../dao/ClientesDao');
 
 module.exports = app => {
     app.get('/clientes', (req, res) => {
-        ClienteDao.all((err, clientes) => {
+        ClientesDao.all((err, clientes) => {
             res.header("Access-Control-Allow-Origin", "*");
             if(err === null) {
                 res.status(200).send(clientes);
@@ -15,7 +15,7 @@ module.exports = app => {
     app.get('/clientes/:id', (req, res) => {
         let idNum = req.params.id;
 
-        ClienteDao.get(idNum, (err, cliente) => {
+        ClientesDao.get(idNum, (err, cliente) => {
             if(err === null) {
                 res.status(200).send(cliente);
             } else {
@@ -28,7 +28,7 @@ module.exports = app => {
         const novoCliente = req.body;
 
         try {
-            ClienteDao.adicionar(novoCliente);
+            ClientesDao.adicionar(novoCliente);
             res.status(200).send(`Cliente cadastrado com sucesso:
                                     nome: ${novoCliente.nome},
                                     CPF: ${novoCliente.cpf},
@@ -42,7 +42,7 @@ module.exports = app => {
     app.delete('/clientes/:id', (req, res) => {
         let idNum = req.params.id;
 
-        ClienteDao.delete(idNum, (err, cliente) => {
+        ClientesDao.delete(idNum, (err, cliente) => {
             if(err === null) {
                 res.status(200).send(`Cliente de id ${idNum} excluído com sucesso!`);
             } else {

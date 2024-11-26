@@ -40,7 +40,7 @@ class ClientesDao {
 
     adicionar(cliente) {
         let sql = '';
-        const parametros = [];
+        let parametros = [];
 
             if (cliente.id !== undefined) {
                 sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';

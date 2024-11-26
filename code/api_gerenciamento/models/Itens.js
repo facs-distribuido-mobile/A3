@@ -1,5 +1,4 @@
-require('../middlewares/general');
-module.exports = class Item {
+module.exports = class Itens {
     constructor(nome, preco, unidades) {
         if(nome.trim()) {
             this.nome = nome.trim();
