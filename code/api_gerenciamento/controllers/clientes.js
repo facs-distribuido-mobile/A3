@@ -1,18 +1,18 @@
-const ClienteDao = require('../dao/ClienteDao');
+const ClienteDao = require('../dao/ClientesDao');
 
 module.exports = app => {
-    app.get('/cliente', (req, res) => {
-        ClienteDao.all((err, cliente) => {
+    app.get('/clientes', (req, res) => {
+        ClienteDao.all((err, clientes) => {
             res.header("Access-Control-Allow-Origin", "*");
             if(err === null) {
-                res.status(200).send(cliente);
+                res.status(200).send(clientes);
             } else {
                 res.status(404).send('Erro: Not Found');
             }
         });
     });
 
-    app.get('/cliente/:id', (req, res) => {
+    app.get('/clientes/:id', (req, res) => {
         let idNum = req.params.id;
 
         ClienteDao.get(idNum, (err, cliente) => {
@@ -24,7 +24,7 @@ module.exports = app => {
         });
     });
 
-    app.post('/cliente', (req, res) => {
+    app.post('/clientes', (req, res) => {
         const novoCliente = req.body;
 
         try {
@@ -39,7 +39,7 @@ module.exports = app => {
 
     });
 
-    app.delete('/cliente/:id', (req, res) => {
+    app.delete('/clientes/:id', (req, res) => {
         let idNum = req.params.id;
 
         ClienteDao.delete(idNum, (err, cliente) => {

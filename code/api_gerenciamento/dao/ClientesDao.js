@@ -1,6 +1,6 @@
 const DbConnection = require('../config/conexao');
 
-class ClienteDao {
+class ClientesDao {
 
     total(callback) {
         const sql = 'SELECT count(*) as count FROM clientes';
@@ -67,4 +67,4 @@ class ClienteDao {
 
 }
 
-module.exports = new ClienteDao();
+module.exports = new ClientesDao();

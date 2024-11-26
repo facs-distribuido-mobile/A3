@@ -1,8 +1,8 @@
-class Vendedor {
+class Vendedores {
     constructor(nome, cpf) {
         this.nome = nome;
         this.cpf = cpf;
     }
 }
 
-module.exports = Vendedor;
+module.exports = Vendedores;

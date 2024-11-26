@@ -1,7 +1,7 @@
-const vendedorDao = require('../dao/vendedorDao');
-const Vendedor = require('../models/vendedor');
+const vendedorDao = require('../dao/vendedoresDao');
+const Vendedores = require('../models/Vendedores');
 
-const vendedorController = {
+const vendedor = {
     create: (req, res) => {
         const { nome, cpf } = req.body;
 
@@ -35,7 +35,7 @@ const vendedorController = {
                     console.error('Erro ao criar vendedor:', err);
                     return res.status(500).json({ message: 'Erro ao criar vendedor.' });
                 }
-                res.status(201).json({ message: 'Vendedor cadastrado com sucesso.', id: result.insertId });
+                res.status(201).json({ message: 'Vendedores cadastrado com sucesso.', id: result.insertId });
             });
         });
     },
@@ -62,7 +62,7 @@ const vendedorController = {
             }
 
             if (results.length === 0) {
-                return res.status(404).json({ message: 'Vendedor não encontrado.' });
+                return res.status(404).json({ message: 'Vendedores não encontrado.' });
             }
 
             res.status(200).json(results[0]);
@@ -90,7 +90,7 @@ const vendedorController = {
                 console.error('Erro ao atualizar vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao atualizar vendedor.' });
             }
-            res.status(200).json({ message: 'Vendedor atualizado com sucesso.' });
+            res.status(200).json({ message: 'Vendedores atualizado com sucesso.' });
         });
     },
 
@@ -103,15 +103,15 @@ const vendedorController = {
                 console.error('Erro ao excluir vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao excluir vendedor.' });
             }
-            res.status(200).json({ message: 'Vendedor excluído com sucesso.' });
+            res.status(200).json({ message: 'Vendedores excluído com sucesso.' });
         });
     }
 };
 
 module.exports = app => {
-    app.get('/vendedores', vendedorController.getAll);
-    app.get('/vendedor/:id', vendedorController.getById);
-    app.post('/vendedor', vendedorController.create);
-    app.put('/vendedor/:id', vendedorController.update);
-    app.delete('/vendedor/:id', vendedorController.delete);
+    app.get('/vendedores', vendedor.getAll);
+    app.get('/vendedores/:id', vendedor.getById);
+    app.post('/vendedores', vendedor.create);
+    app.put('/vendedores/:id', vendedor.update);
+    app.delete('/vendedores/:id', vendedor.delete);
 };

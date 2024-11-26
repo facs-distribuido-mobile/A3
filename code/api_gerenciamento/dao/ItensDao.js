@@ -2,7 +2,7 @@ const DbConnection = require('../config/conexao');
 const middleware = require('../middlewares/general');
 const {realToCents, centsToReal} = require("../middlewares/general");
 
-class ItemDao {
+class ItensDao {
 
     total(callback) {
         let sql = `SELECT count(*) as count FROM itens`;
@@ -70,4 +70,4 @@ class ItemDao {
 
 }
 
-module.exports = new ItemDao();
+module.exports = new ItensDao();
