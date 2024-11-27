@@ -1,16 +1,11 @@
-require('../middlewares/general');
 module.exports = class Item {
-    constructor(nome, preco, unidades) {
+    constructor(nome, preco) {
         if(nome.trim()) {
             this.nome = nome.trim();
         }
 
         if(preco > 0) {
             this.preco = Number(preco);
-        }
-
-        if(unidades > 0) {
-            this.unidades = Number(unidades);
         }
     }
 }

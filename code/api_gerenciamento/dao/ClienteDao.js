@@ -46,7 +46,7 @@ class ClienteDao {
                 sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
                 parametros = [cliente.nome, cliente.cpf, cliente.email, cliente.id];
             } else {
-                sql = 'INSERT INTO clientes(nome, preco, unidades) VALUES(?, ?, ?)';
+                sql = 'INSERT INTO clientes(nome, cpf, email) VALUES(?, ?, ?)';
                 parametros = [cliente.nome, cliente.cpf, cliente.email];
             }
 
