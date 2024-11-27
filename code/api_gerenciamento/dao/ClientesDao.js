@@ -1,6 +1,6 @@
 const DbConnection = require('../config/conexao');
 
-class ClienteDao {
+class ClientesDao {
 
     total(callback) {
         const sql = 'SELECT count(*) as count FROM clientes';
@@ -40,7 +40,7 @@ class ClienteDao {
 
     adicionar(cliente) {
         let sql = '';
-        const parametros = [];
+        let parametros = [];
 
             if (cliente.id !== undefined) {
                 sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
@@ -67,4 +67,4 @@ class ClienteDao {
 
 }
 
-module.exports = new ClienteDao();
+module.exports = new ClientesDao();

@@ -10,9 +10,9 @@ consign()
     .into(app);
 
 app.listen(portNum, () => {
-    console.log(`Servidor rodando na porta ${portNum}`);
+    console.log(`Servidor backend geral rodando na porta ${portNum}`);
 });
 
 app.get('/', (req, res) => {
-    res.status(200).send(`Servidor rodando!`);
+    res.status(200).send(`Servidor backend geral rodando!`);
 });

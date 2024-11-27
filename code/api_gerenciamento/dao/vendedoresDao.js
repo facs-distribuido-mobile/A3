@@ -1,6 +1,6 @@
 const db = require('../config/conexao');
 
-const vendedorDao = {
+const vendedoresDao = {
     // Inserir novo vendedor
     create: (nome, cpf, callback) => {
         const query = 'INSERT INTO vendedores (nome, cpf) VALUES (?, ?)';
@@ -38,4 +38,4 @@ const vendedorDao = {
     }
 };
 
-module.exports = vendedorDao;
+module.exports = vendedoresDao;
