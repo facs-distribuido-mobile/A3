@@ -1,11 +1,16 @@
+const middleware = require('../middlewares/general');
+
 module.exports = class Item {
     constructor(nome, preco) {
-        if(nome.trim()) {
+        const precoTransformado = Number(middleware.realToCents(preco));
+
+        if(typeof (nome) === "string" && !nome.trim()) {
             this.nome = nome.trim();
         }
 
-        if(preco > 0) {
-            this.preco = Number(preco);
+        if(Number(precoTransformado) && Number(precoTransformado) >= 0) {
+            this.preco = Number(precoTransformado);
         }
     }
+
 }

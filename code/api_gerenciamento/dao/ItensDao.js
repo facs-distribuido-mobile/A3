@@ -52,7 +52,7 @@ class ItemDao {
             params = [item.nome.trim(), middleware.realToCents(item.preco), item.id];
         } else {
             sql = `INSERT INTO itens(nome, preco) VALUES(?, ?)`;
-            params = [item.nome.trim(), middleware.realToCents(item.preco)]
+            params = [item.nome, item.preco]
         }
 
         dbConnection.createConnection().query(sql, params);

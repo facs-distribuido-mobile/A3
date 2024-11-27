@@ -1,5 +1,6 @@
 const ItemDao = require('../dao/ItensDao');
 const middleware = require('../middlewares/general');
+const Item = require('../models/Item');
 
 module.exports = app => {
     // Retornar todas as entradas da tabela itens
@@ -38,18 +39,22 @@ module.exports = app => {
 
     // Adicionar ou atualizar uma entrada da tabela item
     app.post('/itens', (req, res) => {
-        const newItem = req.body;
+        const itemBody = req.body;
 
-        if(!newItem.nome.trim() || Number(!newItem.preco.trim())) {
+        if(itemBody.nome === undefined || itemBody.preco === undefined) {
             res.status(400).send(`Os campos nome e preço são obrigatórios!`)
-        } else if (middleware.verificaNegativo(middleware.realToCents(newItem.preco))) {
-            res.status(400).send(`O campo preço não pode ser negativo!`)
         } else {
             try {
-                ItemDao.adicionar(newItem);
-                res.status(200).send(`Item cadastrado com sucesso:
-                                        nome: ${newItem.nome.trim()},
-                                        preço: ${newItem.preco.trim()}`);
+                const item = new Item(itemBody.nome, itemBody.preco);
+                if(item.nome === undefined || item.preco === undefined) {
+                    res.status(400).send(`Você mandou dados errados`)
+                } else {
+                    ItemDao.adicionar(item);
+                    res.status(200).send(`Item cadastrado com sucesso:
+                                        nome: ${item.nome},
+                                        preço: ${item.preco}`);
+                }
+
             } catch (err) {
                 res.status(500).send(`Erro: ${err.message}`)
             }
