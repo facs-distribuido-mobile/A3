@@ -1,22 +1,22 @@
-const ItemDao = require('../dao/ItemDao');
+const ItensDao = require('../dao/ItensDao');
 const middleware = require('../middlewares/general');
 
 module.exports = app => {
-    app.get('/item', (req, res) => {
-        ItemDao.all((err, item) => {
+    app.get('/itens', (req, res) => {
+        ItensDao.all((err, itens) => {
             res.header("Access-Control-Allow-Origin", "*");
             if(err === null) {
-                res.status(200).send(item);
+                res.status(200).send(itens);
             } else {
                 res.status(404).send(`Not Found`);
             }
         })
     })
 
-    app.get('/item/:id', (req, res) => {
+    app.get('/itens/:id', (req, res) => {
         let idNum = req.params.id;
 
-        ItemDao.get(idNum, (err, item) => {
+        ItensDao.get(idNum, (err, item) => {
             if(err === null) {
                 res.status(200).send(item);
             } else {
@@ -25,7 +25,7 @@ module.exports = app => {
         })
     })
 
-    app.post('/item', (req, res) => {
+    app.post('/itens', (req, res) => {
         const newItem = req.body;
 
         if(!newItem.nome.trim() || Number(!newItem.preco.trim())) {
@@ -36,7 +36,7 @@ module.exports = app => {
             res.status(400).send(`O campos unidades não pode ser negativo!`)
         } else {
             try {
-                ItemDao.adicionar(newItem);
+                ItensDao.adicionar(newItem);
                 res.status(200).send(`Item cadastrado com sucesso:
                                         nome: ${newItem.nome.trim()},
                                         preço: ${newItem.preco.trim()}`);
@@ -46,10 +46,10 @@ module.exports = app => {
         }
     })
 
-    app.delete('/item/:id', (req, res) => {
+    app.delete('/itens/:id', (req, res) => {
         let idNum = req.params.id;
 
-        ItemDao.delete(idNum, (err, item) => {
+        ItensDao.delete(idNum, (err, item) => {
             if(err === null) {
                 res.status(200).send(`Item de id ${idNum} excluído com sucesso!`);
             } else {

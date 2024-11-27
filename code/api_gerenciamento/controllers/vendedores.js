@@ -1,7 +1,7 @@
-const vendedorDao = require('../dao/vendedorDao');
-const Vendedor = require('../models/vendedor');
+const vendedoresDao = require('../dao/vendedoresDao');
+const Vendedores = require('../models/Vendedor');
 
-const vendedorController = {
+const vendedores = {
     create: (req, res) => {
         const { nome, cpf } = req.body;
 
@@ -19,7 +19,7 @@ const vendedorController = {
         }
 
         // Verificar se o CPF já existe
-        vendedorDao.checkCpfExists(cpf, (err, results) => {
+        vendedoresDao.checkCpfExists(cpf, (err, results) => {
             if (err) {
                 console.error('Erro ao verificar CPF:', err);
                 return res.status(500).json({ message: 'Erro ao verificar CPF.' });
@@ -30,7 +30,7 @@ const vendedorController = {
             }
 
             // Inserir vendedor
-            vendedorDao.create(nome, cpf, (err, result) => {
+            vendedoresDao.create(nome, cpf, (err, result) => {
                 if (err) {
                     console.error('Erro ao criar vendedor:', err);
                     return res.status(500).json({ message: 'Erro ao criar vendedor.' });
@@ -42,7 +42,7 @@ const vendedorController = {
 
     // Listar todos os vendedores
     getAll: (req, res) => {
-        vendedorDao.getAll((err, results) => {
+        vendedoresDao.getAll((err, results) => {
             if (err) {
                 console.error('Erro ao listar vendedores:', err);
                 return res.status(500).json({ message: 'Erro ao listar vendedores.' });
@@ -55,7 +55,7 @@ const vendedorController = {
     getById: (req, res) => {
         const { id } = req.params;
 
-        vendedorDao.getById(id, (err, results) => {
+        vendedoresDao.getById(id, (err, results) => {
             if (err) {
                 console.error('Erro ao buscar vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao buscar vendedor.' });
@@ -85,7 +85,7 @@ const vendedorController = {
             });
         }
 
-        vendedorDao.update(id, nome, cpf, (err) => {
+        vendedoresDao.update(id, nome, cpf, (err) => {
             if (err) {
                 console.error('Erro ao atualizar vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao atualizar vendedor.' });
@@ -98,7 +98,7 @@ const vendedorController = {
     delete: (req, res) => {
         const { id } = req.params;
 
-        vendedorDao.delete(id, (err) => {
+        vendedoresDao.delete(id, (err) => {
             if (err) {
                 console.error('Erro ao excluir vendedor:', err);
                 return res.status(500).json({ message: 'Erro ao excluir vendedor.' });
@@ -109,9 +109,9 @@ const vendedorController = {
 };
 
 module.exports = app => {
-    app.get('/vendedores', vendedorController.getAll);
-    app.get('/vendedor/:id', vendedorController.getById);
-    app.post('/vendedor', vendedorController.create);
-    app.put('/vendedor/:id', vendedorController.update);
-    app.delete('/vendedor/:id', vendedorController.delete);
+    app.get('/vendedores', vendedores.getAll);
+    app.get('/vendedores/:id', vendedores.getById);
+    app.post('/vendedores', vendedores.create);
+    app.put('/vendedores/:id', vendedores.update);
+    app.delete('/vendedores/:id', vendedores.delete);
 };

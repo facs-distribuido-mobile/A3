@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS vendedores (
 CREATE TABLE IF NOT EXISTS itens (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nome VARCHAR(100) NOT NULL,
-	preco DOUBLE(10, 2) NOT NULL
+	preco INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS estoque (
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS vendas (
 	id_vendedor INT NOT NULL,
 	data_hora DATETIME NOT NULL,
 	status VARCHAR(100) NOT NULL,
-	total DOUBLE(10, 2) NOT NULL,
+	total INT NOT NULL,
 	FOREIGN KEY(id_cliente) REFERENCES clientes(id),
 	FOREIGN KEY(id_vendedor) REFERENCES vendedores(id)
 );
@@ -45,83 +45,110 @@ CREATE TABLE IF NOT EXISTS vendas_detalhes (
 	FOREIGN KEY(id_item) REFERENCES itens(id)
 );
 
-INSERT INTO clientes (nome, cpf, email) 
+INSERT INTO clientes (nome, cpf, email)
 VALUES ('Otávio Anderson Davi dos Santos', '71072741121', 'otavio_anderson_dossantos@directnet.com.br');
 
-INSERT INTO clientes (nome, cpf, email) 
+INSERT INTO clientes (nome, cpf, email)
 VALUES ('Helena Eloá Alessandra da Cunha', '33620033625', 'helenaeloadacunha@likaleal.com.br');
 
-INSERT INTO clientes (nome, cpf, email) 
-VALUES ('Bryan Diego Sérgio Aparício', '38795350942', 'bryan.diego.aparicio@galvao.com');
+INSERT INTO clientes (nome, cpf, email)
+VALUES ('Bryan Diego Sérgio Aparécio', '38795350942', 'bryan.diego.aparicio@galvao.com');
 
-INSERT INTO clientes (nome, cpf, email) 
+INSERT INTO clientes (nome, cpf, email)
 VALUES ('Liz Luzia Milena Farias', '09615376396', 'liz_luzia_farias@vitacard.com.br');
 
-INSERT INTO clientes (nome, cpf, email) 
+INSERT INTO clientes (nome, cpf, email)
 VALUES ('Antonio Arthur Roberto Moraes', '75315419126', 'antonio.arthur.moraes@athoscontabil.com.br');
 
-INSERT INTO vendedores (nome, cpf) 
+INSERT INTO vendedores (nome, cpf)
 VALUES ('Andreia Heloise Rezende', '66521905910');
 
-INSERT INTO vendedores (nome, cpf) 
+INSERT INTO vendedores (nome, cpf)
 VALUES ('Nair Rosângela Olivia Mendes', '01863784756');
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Suplemento Nutricional', 49.35);
+INSERT INTO itens (nome, preco)
+VALUES ('Suplemento Nutricional', 4935);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (1, 31);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Creme Dental ', 20.00);
+INSERT INTO itens (nome, preco)
+VALUES ('Creme Dental ', 2000);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (2, 48);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Vitaminas C e D', 42.28);
+INSERT INTO itens (nome, preco)
+VALUES ('Vitaminas C e D', 4228);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
-VALUES (3, 8);
+INSERT INTO estoque (id_item, quantidade_atual)
+VALUES (3, 80);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Pacote de Fraldas', 62.45);
+INSERT INTO itens (nome, preco)
+VALUES ('Pacote de Fraldas', 6245);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (4, 67);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Curativo Adesivo', 5.25);
+INSERT INTO itens (nome, preco)
+VALUES ('Curativo Adesivo', 525);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
-VALUES (5, 4);
+INSERT INTO estoque (id_item, quantidade_atual)
+VALUES (5, 400);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Shampoo e Condicionador', 78.55);
+INSERT INTO itens (nome, preco)
+VALUES ('Shampoo e Condicionador', 7855);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (6, 88);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Protetor Solar', 84.29);
+INSERT INTO itens (nome, preco)
+VALUES ('Protetor Solar', 8429);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (7, 63);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Álcool 70%', 6.27);
+INSERT INTO itens (nome, preco)
+VALUES ('Álcool 70%', 627);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (8, 71);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Analgésico ', 20.27);
+INSERT INTO itens (nome, preco)
+VALUES ('Analgésico ', 2027);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (9, 11);
 
-INSERT INTO itens (nome, preco) 
-VALUES ('Creme hidratante', 27.68);
+INSERT INTO itens (nome, preco)
+VALUES ('Creme hidratante', 2768);
 
-INSERT INTO estoque (id_item, quantidade_atual) 
+INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (10, 52);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (1, 1, '2024-11-27 12:30:00', 'pendente', 7050);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (1, 2, 3, 6000);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (1, 5, 2, 1050);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (4, 2, '2023-02-28 23:59:59', 'completo', 20213);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 6, 1, 7855);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 9, 2, 4054);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 10, 3, 8304);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (5, 2, '2023-12-25 06:07:33', 'cancelado', 493500);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (3, 1, 100, 493500);

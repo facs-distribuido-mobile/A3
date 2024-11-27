@@ -2,7 +2,7 @@ const DbConnection = require('../config/conexao');
 const middleware = require('../middlewares/general');
 const {realToCents, centsToReal} = require("../middlewares/general");
 
-class ItemDao {
+class ItensDao {
 
     total(callback) {
         let sql = `SELECT count(*) as count FROM itens`;
@@ -46,14 +46,17 @@ class ItemDao {
 
     adicionar(item) {
         let sql = '';
+        let params;
 
             if(item.id !== undefined) {
-                sql = `UPDATE itens SET nome = '${item.nome.trim()}', preco = ${middleware.realToCents(item.preco)} WHERE id = ${item.id}`
+                sql = `UPDATE itens SET nome = ?, preco = ? WHERE id = ?`;
+                params = [item.nome.trim(), middleware.realToCents(item.preco), item.id];
             } else {
-                sql = `INSERT INTO itens(nome, preco) VALUES('${item.nome.trim()}', ${middleware.realToCents(item.preco)})`;
+                sql = `INSERT INTO itens(nome, preco) VALUES(?, ?)`;
+                params = [item.nome.trim(), middleware.realToCents(item.preco)]
             }
 
-        DbConnection.createConnection().query(sql);
+        DbConnection.createConnection().query(sql, params);
     }
 
     delete(id, callback) {
@@ -70,4 +73,4 @@ class ItemDao {
 
 }
 
-module.exports = new ItemDao();
+module.exports = new ItensDao();
