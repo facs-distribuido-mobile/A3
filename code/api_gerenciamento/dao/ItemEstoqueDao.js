@@ -16,7 +16,7 @@ class ItemEstoqueDao {
     }
 
     all(callback) {
-        let sql = `SELECT * FROM estoque LEFT JOIN itens on estoque.id_item = item.id`;
+        let sql = `SELECT estoque.id, itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id`;
 
         dbConnection.createConnection().query(sql, [], (err, itens_estoque) => {
             if(err || itens_estoque === undefined) {
@@ -32,8 +32,8 @@ class ItemEstoqueDao {
 
     get(id, callback) {
         let sql;
-        sql = `SELECT * FROM estoque LEFT JOIN itens on estoque.id_item = item.id
-                       WHERE id = ?`;
+        sql = `SELECT itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id
+                       WHERE estoque.id = ?`;
 
         dbConnection.createConnection().query(sql, id, (err, itens_estoque) => {
             if (err || itens_estoque.length === 0) {
@@ -46,14 +46,14 @@ class ItemEstoqueDao {
     }
 
     adicionar(item_estoque) {
-        const sql = `INSERT INTO estoque(id_item, quantidade) VALUES(?, ?)`;
-        const params = [item_estoque.id.trim(), item_estoque.quantidade.trim()];
+        const sql = `INSERT INTO estoque(id_item, quantidade_atual) VALUES(?, ?)`;
+        const params = [item_estoque.id_item.trim(), item_estoque.quantidade.trim()];
 
         dbConnection.createConnection().query(sql, params);
     }
 
     modificar(id, item_estoque_quantidade) {
-        const sql = `UPDATE estoque set quantidade = ? WHERE id = ?`;
+        const sql = `UPDATE estoque set quantidade_atual = ? WHERE id = ?`;
         const params = [item_estoque_quantidade.trim(), id];
 
         dbConnection.createConnection().query(sql, params);

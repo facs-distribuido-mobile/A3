@@ -41,19 +41,19 @@ module.exports = app => {
     app.post('/estoque', (req, res) => {
         const newItemEstoque = req.body;
 
-        if(Number(!newItemEstoque.id.trim()) || Number(!newItemEstoque.quantidade.trim())) {
+        if(Number(!newItemEstoque.id_item.trim()) || Number(!newItemEstoque.quantidade.trim())) {
             res.status(400).send(`Os campos de id do item e quantidade são obrigatórios!`);
         } else if (middleware.verificaNegativo(newItemEstoque.quantidade)) {
             res.status(400).send(`O campo quantidade não pode ser negativo!`);
         } else {
             try {
-                ItemEstoqueDao.get(newItemEstoque.id, (err, item_estoque) => {
-                    if(item_estoque.length !== 0 || err === null) {
+                ItemEstoqueDao.get(newItemEstoque.id_item, (err, item_estoque) => {
+                    if(item_estoque !== null || err === null) {
                         res.status(400).send(`Erro: item já cadastrado no estoque!`);
                     }  else {
                         ItemEstoqueDao.adicionar(newItemEstoque);
                         res.status(200).send(`Item cadastrado no estoque com sucesso:
-                                                id do item: ${newItemEstoque.id.trim()},
+                                                id do item: ${newItemEstoque.id_item.trim()},
                                                 quantidade: ${newItemEstoque.quantidade.trim()}`);
                     }
                 });
