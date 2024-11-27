@@ -1,9 +1,9 @@
-const ItemDao = require('../dao/ItemDao');
+const ItemDao = require('../dao/ItensDao');
 const middleware = require('../middlewares/general');
 
 module.exports = app => {
     // Retornar todas as entradas da tabela itens
-    app.get('/item', (req, res) => {
+    app.get('/itens', (req, res) => {
 
         try {
             ItemDao.all((err, itens) => {
@@ -20,7 +20,7 @@ module.exports = app => {
     })
 
     // Retornar uma entrada da tabela item, por id
-    app.get('/item/:id', (req, res) => {
+    app.get('/itens/:id', (req, res) => {
         const idNum = req.params.id;
 
         try {
@@ -37,7 +37,7 @@ module.exports = app => {
     })
 
     // Adicionar ou atualizar uma entrada da tabela item
-    app.post('/item', (req, res) => {
+    app.post('/itens', (req, res) => {
         const newItem = req.body;
 
         if(!newItem.nome.trim() || Number(!newItem.preco.trim())) {
@@ -56,7 +56,7 @@ module.exports = app => {
         }
     })
 
-    app.delete('/item/:id', (req, res) => {
+    app.delete('/itens/:id', (req, res) => {
         const idNum = req.params.id;
 
         ItemDao.delete(idNum, (err, item) => {
