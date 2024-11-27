@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS vendedores (
 CREATE TABLE IF NOT EXISTS itens (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nome VARCHAR(100) NOT NULL,
-	preco DOUBLE(10, 2) NOT NULL
+	preco INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS estoque (
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS vendas (
 	id_vendedor INT NOT NULL,
 	data_hora DATETIME NOT NULL,
 	status VARCHAR(100) NOT NULL,
-	total DOUBLE(10, 2) NOT NULL,
+	total INT NOT NULL,
 	FOREIGN KEY(id_cliente) REFERENCES clientes(id),
 	FOREIGN KEY(id_vendedor) REFERENCES vendedores(id)
 );
@@ -126,9 +126,29 @@ VALUES ('Creme hidratante', 2768);
 INSERT INTO estoque (id_item, quantidade_atual)
 VALUES (10, 52);
 
-# DROP TABLE clientes;
-# DROP TABLE vendedores;
-# DROP TABLE itens;
-# DROP TABLE estoque;
-# DROP TABLE vendas;
-# DROP TABLE vendas_detalhes;
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (1, 1, '2024-11-27 12:30:00', 'pendente', 7050);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (1, 2, 3, 6000);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (1, 5, 2, 1050);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (4, 2, '2023-02-28 23:59:59', 'completo', 20213);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 6, 1, 7855);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 9, 2, 4054);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (2, 10, 3, 8304);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (5, 2, '2023-12-25 06:07:33', 'cancelado', 493500);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (3, 1, 100, 493500);
