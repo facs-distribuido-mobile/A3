@@ -1,14 +1,23 @@
+const middleware = require('../middlewares/general');
+
 module.exports = class ItemEstoque {
     id_item;
     quantidade;
 
-    constructor(id_item, quantidade) {
-        if(Number(id_item.trim()) !== null) {
-            this.id_item = Number(id_item).toFixed();
+    constructor(idItem, quantidade) {
+        const idItemTratado = Number(idItem);
+        const quantidadeTratada = Number(quantidade)
+
+        if(idItemTratado
+            && typeof (idItemTratado) === 'number') {
+            this.id_item = idItemTratado;
         }
 
-        if(quantidade > 0) {
-            this.quantidade = Number(quantidade);
+        if(quantidadeTratada
+            && typeof (quantidadeTratada) === 'number'
+            && middleware.verificaPositivo(quantidadeTratada)) {
+            this.quantidade = quantidadeTratada;
         }
     }
+
 }

@@ -47,14 +47,14 @@ class ItemEstoqueDao {
 
     adicionar(item_estoque) {
         const sql = `INSERT INTO estoque(id_item, quantidade_atual) VALUES(?, ?)`;
-        const params = [item_estoque.id_item.trim(), item_estoque.quantidade.trim()];
+        const params = [item_estoque.id_item, item_estoque.quantidade];
 
         dbConnection.createConnection().query(sql, params);
     }
 
-    modificar(id, item_estoque_quantidade) {
+    modificar(id, item_estoque) {
         const sql = `UPDATE estoque set quantidade_atual = ? WHERE id = ?`;
-        const params = [item_estoque_quantidade.trim(), id];
+        const params = [item_estoque.quantidade, id];
 
         dbConnection.createConnection().query(sql, params);
     }

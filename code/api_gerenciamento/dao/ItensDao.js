@@ -18,7 +18,7 @@ class ItemDao {
     all(callback) {
         let sql = `SELECT * FROM itens`;
 
-        dbConnection.createConnection().query(sql, [], (err, itens) => {
+        dbConnection.createConnection().query(sql, (err, itens) => {
             if(err || itens === undefined) {
                 callback("Not found", null);
             } else {
@@ -44,16 +44,16 @@ class ItemDao {
     }
 
     adicionar(item) {
-        let sql = '';
-        let params;
+        const sql = `INSERT INTO itens(nome, preco)
+                     VALUES (?, ?)`;
+        const params = [item.nome, item.preco]
 
-        if(item.id !== undefined) {
-            sql = `UPDATE itens SET nome = ?, preco = ? WHERE id = ?`;
-            params = [item.nome.trim(), middleware.realToCents(item.preco), item.id];
-        } else {
-            sql = `INSERT INTO itens(nome, preco) VALUES(?, ?)`;
-            params = [item.nome, item.preco]
-        }
+        dbConnection.createConnection().query(sql, params);
+    }
+
+    modificar(id, item) {
+        const sql = `UPDATE itens SET nome = ?, preco = ? WHERE id = ?`;
+        const params = [item.nome, item.preco, id];
 
         dbConnection.createConnection().query(sql, params);
     }
