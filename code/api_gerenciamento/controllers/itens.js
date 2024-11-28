@@ -91,6 +91,7 @@ module.exports = app => {
 
     })
 
+    // Excluir uma entrada de item do cadastro, por id
     app.delete('/itens/:id', (req, res) => {
         const idNum = req.params.id;
 

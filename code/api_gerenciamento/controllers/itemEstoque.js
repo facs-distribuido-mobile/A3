@@ -50,12 +50,12 @@ module.exports = app => {
                     return res.status(400).send(`Erro: dados de id do item e/ou quantidade incorretos!`);
                 }
 
-                ItemEstoqueDao.get(itemEstoque.id_item, (err, item_estoque) => {
-                    if(item_estoque !== null || err === null) {
-                        res.status(400).send(`Erro: item já cadastrado no estoque!`);
+                ItemEstoqueDao.get(itemEstoque.id_item, (err, itens_estoque) => {
+                    if(itens_estoque !== null || err === null) {
+                        return res.status(400).send(`Erro: item já cadastrado no estoque!`);
                     }  else {
                         ItemEstoqueDao.adicionar(itemEstoque);
-                        res.status(200).send(`Item cadastrado no estoque com sucesso:
+                        return res.status(200).send(`Item cadastrado no estoque com sucesso:
                                                 id do item: ${itemEstoque.id_item},
                                                 quantidade: ${itemEstoque.quantidade}`);
                     }
@@ -114,6 +114,4 @@ module.exports = app => {
             return res.status(500).send(`Erro: ${err.message}`);
         }
     })
-
-
 }

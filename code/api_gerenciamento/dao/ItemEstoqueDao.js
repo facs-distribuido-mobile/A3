@@ -31,8 +31,7 @@ class ItemEstoqueDao {
     }
 
     get(id, callback) {
-        let sql;
-        sql = `SELECT itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id
+        const sql = `SELECT itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id
                        WHERE estoque.id = ?`;
 
         dbConnection.createConnection().query(sql, id, (err, itens_estoque) => {

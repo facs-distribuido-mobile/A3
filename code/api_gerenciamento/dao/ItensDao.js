@@ -59,7 +59,7 @@ class ItemDao {
     }
 
     delete(id, callback) {
-        let sql = `DELETE FROM itens WHERE id = ?`;
+        const sql = `DELETE FROM itens WHERE id = ?`;
 
         dbConnection.createConnection().query(sql, id, (err, item) => {
             if(err || item.affectedRows === 0) {
