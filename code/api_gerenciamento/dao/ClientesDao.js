@@ -2,26 +2,16 @@ const DbConnection = require('../config/conexao');
 
 class ClientesDao {
 
-    total(callback) {
-        const sql = 'SELECT count(*) as count FROM clientes';
-
-        DbConnection.createConnection().query(sql, [], (err, total) => {
-            if (err || total === undefined) {
-                callback('Not Found', null)
-            } else {
-                callback(null, total.count);
-            }
-        });
-    }
-
-    all(callback) {
+    getAll(callback) {
         const sql = 'SELECT * FROM clientes';
 
         DbConnection.createConnection().query(sql, [], (err, clientes) => {
-            if (err || clientes === undefined) {
+            if (err) {
+                callback(err, null);
+            } else if (clientes.length === 0) {
                 callback('Not found', null);
             } else {
-                callback(null, clientes)
+                callback(null, clientes);
             }
         });
     }
@@ -30,7 +20,9 @@ class ClientesDao {
         const sql = 'SELECT * FROM clientes WHERE id = ?';
 
         DbConnection.createConnection().query(sql, [id], (err, clientes) => {
-            if (err || clientes.length === 0) {
+            if (err) {
+                callback(err, null);
+            } else if (clientes.length === 0) {
                 callback('Not found', null);
             } else {
                 callback(null, clientes[0]);
@@ -38,29 +30,39 @@ class ClientesDao {
         });
     }
 
-    adicionar(cliente) {
-        let sql = '';
-        let parametros = [];
+    add(cliente, callback) {
+        //let sql = '';
+        //const parametros = [];
+        const sql = 'INSERT INTO clientes(nome, cpf, email) VALUES(?, ?, ?)';
+        const parametros = [cliente.nome, cliente.cpf, cliente.email];
 
-            if (cliente.id !== undefined) {
-                sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
-                parametros = [cliente.nome, cliente.cpf, cliente.email, cliente.id];
+        /*if (cliente.id !== undefined) {
+            sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
+            parametros = [cliente.nome, cliente.cpf, cliente.email, cliente.id];
+        } else {
+            sql = 'INSERT INTO clientes(nome, cpf, email) VALUES(?, ?, ?)';
+            parametros = [cliente.nome, cliente.cpf, cliente.email];
+        }*/
+
+        DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
+            if (err) {
+                callback(err, null);
             } else {
-                sql = 'INSERT INTO clientes(nome, preco, unidades) VALUES(?, ?, ?)';
-                parametros = [cliente.nome, cliente.cpf, cliente.email];
+                callback(null, dbRes);
             }
-
-        DbConnection.createConnection().query(sql, parametros);
+        });
     }
 
     delete(id, callback) {
         const sql = 'DELETE FROM clientes WHERE id = ?';
 
-        DbConnection.createConnection().query(sql, [id], (err, cliente) => {
-            if(err || cliente.affectedRows === 0) {
+        DbConnection.createConnection().query(sql, [id], (err, dbRes) => {
+            if (err) {
+                callback(err, null);
+            } else if (dbRes.affectedRows === 0) {
                 callback('Not found', null);
             } else {
-                callback(null, cliente);
+                callback(null, dbRes);
             }
         });
     }
