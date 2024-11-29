@@ -1,13 +1,12 @@
-const DbConnection = require('../config/conexao');
+const dbConnection = require('../config/conexao');
 const middleware = require('../middlewares/general');
-const {realToCents, centsToReal} = require("../middlewares/general");
 
-class ItensDao {
+class ItemDao {
 
     total(callback) {
         let sql = `SELECT count(*) as count FROM itens`;
 
-        DbConnection.createConnection().query(sql, [], (err, total) => {
+        dbConnection.createConnection().query(sql, [], (err, total) => {
             if (err || total === undefined) {
                 callback("Not Found", null)
             } else {
@@ -19,7 +18,7 @@ class ItensDao {
     all(callback) {
         let sql = `SELECT * FROM itens`;
 
-        DbConnection.createConnection().query(sql, [], (err, itens) => {
+        dbConnection.createConnection().query(sql, (err, itens) => {
             if(err || itens === undefined) {
                 callback("Not found", null);
             } else {
@@ -34,35 +33,35 @@ class ItensDao {
     get(id, callback) {
         let sql = `SELECT * FROM itens WHERE id = ?`;
 
-        DbConnection.createConnection().query(sql, [id], (err, itens) => {
+        dbConnection.createConnection().query(sql, id, (err, itens) => {
             if(err || itens.length === 0) {
                 callback("Not found", null);
             } else {
-                itens[0].preco = centsToReal(itens[0].preco);
+                itens[0].preco = middleware.centsToReal(itens[0].preco);
                 callback(null, itens[0]);
             }
         })
     }
 
     adicionar(item) {
-        let sql = '';
-        let params;
+        const sql = `INSERT INTO itens(nome, preco)
+                     VALUES (?, ?)`;
+        const params = [item.nome, item.preco]
 
-            if(item.id !== undefined) {
-                sql = `UPDATE itens SET nome = ?, preco = ? WHERE id = ?`;
-                params = [item.nome.trim(), middleware.realToCents(item.preco), item.id];
-            } else {
-                sql = `INSERT INTO itens(nome, preco) VALUES(?, ?)`;
-                params = [item.nome.trim(), middleware.realToCents(item.preco)]
-            }
+        dbConnection.createConnection().query(sql, params);
+    }
 
-        DbConnection.createConnection().query(sql, params);
+    modificar(id, item) {
+        const sql = `UPDATE itens SET nome = ?, preco = ? WHERE id = ?`;
+        const params = [item.nome, item.preco, id];
+
+        dbConnection.createConnection().query(sql, params);
     }
 
     delete(id, callback) {
-        let sql = `DELETE FROM itens WHERE id = ?`;
+        const sql = `DELETE FROM itens WHERE id = ?`;
 
-        DbConnection.createConnection().query(sql, [id], (err, item) => {
+        dbConnection.createConnection().query(sql, [id], (err, item) => {
             if(err || item.affectedRows === 0) {
                 callback("Not found", null);
             } else {
@@ -73,4 +72,4 @@ class ItensDao {
 
 }
 
-module.exports = new ItensDao();
+module.exports = new ItemDao();

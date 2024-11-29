@@ -1,60 +1,110 @@
-const ItensDao = require('../dao/ItensDao');
 const middleware = require('../middlewares/general');
+const ItemDao = require('../dao/ItensDao');
+const Item = require('../models/Item');
 
 module.exports = app => {
+    // Retornar todas as entradas da tabela itens
     app.get('/itens', (req, res) => {
-        ItensDao.all((err, itens) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            if(err === null) {
-                res.status(200).send(itens);
-            } else {
-                res.status(404).send(`Not Found`);
-            }
-        })
+        try {
+            ItemDao.all((err, itens) => {
+                res.header("Access-Control-Allow-Origin", "*");
+                if(err === null) {
+                    return res.status(200).send(itens);
+                } else {
+                    return res.status(404).send(`Erro: Not Found`);
+                }
+            })
+        } catch (err) {
+            return res.status(500).send(`Erro: ${err.message}`);
+        }
     })
 
+    // Retornar uma entrada da tabela item, por id
     app.get('/itens/:id', (req, res) => {
-        let idNum = req.params.id;
+        const idNum = req.params.id;
 
-        ItensDao.get(idNum, (err, item) => {
-            if(err === null) {
-                res.status(200).send(item);
-            } else {
-                res.status(404).send(`Erro: Not Found`);
-            }
-        })
+        try {
+            ItemDao.get(idNum, (err, item) => {
+                if(err === null) {
+                    return res.status(200).send(item);
+                } else {
+                    return res.status(404).send(`Erro: Not Found`);
+                }
+            })
+        } catch (err) {
+            return res.status(500).send(`Erro: ${err.message}`);
+        }
     })
 
+    // Adicionar uma entrada da tabela item
     app.post('/itens', (req, res) => {
         const newItem = req.body;
 
-        if(!newItem.nome.trim() || Number(!newItem.preco.trim())) {
-            res.status(400).send(`Os campos nome, preço e unidades são obrigatórios`)
-        } else if (middleware.verificaNegativo(middleware.realToCents(newItem.preco))) {
-            res.status(400).send(`O campo preço não pode ser negativo!`)
-        } else if (middleware.verificaNegativo(newItem.unidades)) {
-            res.status(400).send(`O campos unidades não pode ser negativo!`)
+        if(newItem.nome === undefined || newItem.preco === undefined) {
+            return res.status(400).send(`Os campos nome e preço são obrigatórios!`)
         } else {
             try {
-                ItensDao.adicionar(newItem);
-                res.status(200).send(`Item cadastrado com sucesso:
-                                        nome: ${newItem.nome.trim()},
-                                        preço: ${newItem.preco.trim()}`);
+                const item = new Item(newItem.nome, newItem.preco);
+
+                if(item.nome === undefined || item.preco === undefined) {
+                    return res.status(400).send(`Erro: dados de nome e/ou preço incorretos!`)
+                }
+
+                ItemDao.adicionar(item);
+                return res.status(200).send(`Item cadastrado com sucesso:
+                                              nome: ${item.nome},
+                                                preço: ${middleware.centsToReal(item.preco)}`);
             } catch (err) {
-                res.status(500).send(`Erro: ${err.message}`)
+                return res.status(500).send(`Erro: ${err.message}`)
             }
         }
     })
 
-    app.delete('/itens/:id', (req, res) => {
-        let idNum = req.params.id;
+    // Modificar o nome ou preço de uma entrada da tabela item, por id
+    app.put('/itens/:id', (req,res) => {
+        const idItem = req.params.id;
+        const newItem = req.body;
 
-        ItensDao.delete(idNum, (err, item) => {
-            if(err === null) {
-                res.status(200).send(`Item de id ${idNum} excluído com sucesso!`);
-            } else {
-                res.status(404).send(`Erro: Not Found`);
+        if(newItem.nome === undefined || newItem.preco === undefined) {
+            return res.status(400).send(`Os campos de nome e preço são obrigatórios!`);
+        } else {
+            try {
+                ItemDao.get(idItem, (err, item_cadastrado) => {
+                    if(item_cadastrado === null || err !== null) {
+                        return res.status(400).send(`Erro: item não encontrado no cadastro!`);
+                    }
+                    //
+                    const item = new Item(newItem.nome, newItem.preco);
+                    if(item.nome === undefined || item.preco === undefined) {
+                        return res.status(400).send(`Erro: dado de nome e/ou preço incorretos!`);
+                    }
+
+                    ItemDao.modificar(idItem, item);
+                    return res.status(200).send(`Item modificado com sucesso:
+                                                 nome do item: ${item.nome},
+                                                 preço do item: ${middleware.centsToReal(item.preco)}`);
+                })
+            } catch (err) {
+                return res.status(500).send(`Erro: ${err.message}`);
             }
-        })
+        }
+
+    })
+
+    // Excluir uma entrada de item do cadastro, por id
+    app.delete('/itens/:id', (req, res) => {
+        const idNum = req.params.id;
+
+        try {
+            ItemDao.delete(idNum, (err, item) => {
+                if(err === null) {
+                    return res.status(200).send(`Item de id ${idNum} excluído com sucesso!`);
+                } else {
+                    return res.status(404).send(`Erro: Not Found`);
+                }
+            })
+        } catch (err) {
+            return res.status(500).send(`Erro: ${err.message}`);
+        }
     })
 }
