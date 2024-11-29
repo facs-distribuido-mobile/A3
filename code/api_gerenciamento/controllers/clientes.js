@@ -62,10 +62,8 @@ module.exports = app => {
                 console.log(`Erro: ${err}`);
                 return res.status(500).send('Erro: Erro no servidor.');
             }
-            return res.status(200).send(`Cliente cadastrado com sucesso:
-                nome: ${cliente.nome},
-                CPF: ${cliente.cpf},
-                email: ${cliente.email}`);
+            const mensagem = `Cliente cadastrado com sucesso:\nnome: ${cliente.nome},\nCPF: ${cliente.cpf},\nemail: ${cliente.email}`;
+            return res.status(200).send(mensagem);
         });
     });
 
@@ -104,10 +102,8 @@ module.exports = app => {
                 console.log(`Erro: ${err}`);
                 return res.status(500).send('Erro: Erro no servidor.');
             }
-            return res.status(200).send(`Cliente atualizado com sucesso:
-                nome: ${cliente.nome},
-                CPF: ${cliente.cpf},
-                email: ${cliente.email}`);
+            const mensagem = `Cliente atualizado com sucesso:\nnome: ${cliente.nome},\nCPF: ${cliente.cpf},\nemail: ${cliente.email}`;
+            return res.status(200).send(mensagem);
         });
     });
 
