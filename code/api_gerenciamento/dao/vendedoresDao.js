@@ -1,41 +1,44 @@
 const db = require('../config/conexao');
 
-const vendedoresDao = {
-    // Inserir novo vendedor
-    create: (nome, cpf, callback) => {
-        const query = 'INSERT INTO vendedores (nome, cpf) VALUES (?, ?)';
-        db.createConnection().query(query, [nome, cpf], callback);
-    },
+class VendedoresDao {
+  total(callback) {
+    const query = 'SELECT COUNT(*) as total FROM vendedores';
+    db.createConnection().query(query, [], (err, result) => {
+      if (err) return callback(err, null);
+      callback(null, result[0].total);
+    });
+  }
 
-    // Verificar se o CPF já existe
-    checkCpfExists: (cpf, callback) => {
-        const query = 'SELECT id FROM vendedores WHERE cpf = ?';
-        db.createConnection().query(query, [cpf], callback);
-    },
+  all(callback) {
+    const query = 'SELECT * FROM vendedores';
+    db.createConnection().query(query, [], (err, vendedores) => {
+      if (err) return callback(err, null);
+      callback(null, vendedores);
+    });
+  }
 
-    // Obter todos os vendedores
-    getAll: (callback) => {
-        const query = 'SELECT * FROM vendedores';
-        db.createConnection().query(query, callback);
-    },
+  getById(id, callback) {
+    const query = 'SELECT * FROM vendedores WHERE id = ?';
+    db.createConnection().query(query, [id], (err, vendedores) => {
+      if (err || !vendedores.length) return callback(new Error('Vendedor não encontrado.'), null);
+      callback(null, vendedores[0]);
+    });
+  }
 
-    // Obter vendedor por ID
-    getById: (id, callback) => {
-        const query = 'SELECT * FROM vendedores WHERE id = ?';
-        db.createConnection().query(query, [id], callback);
-    },
+  add(vendedor, callback) {
+    const query = 'INSERT INTO vendedores (nome, cpf) VALUES (?, ?)';
+    db.createConnection().query(query, [vendedor.nome, vendedor.cpf], callback);
+  }
 
-    // Atualizar vendedor por ID
-    update: (id, nome, cpf, callback) => {
-        const query = 'UPDATE vendedores SET nome = ?, cpf = ? WHERE id = ?';
-        db.createConnection().query(query, [nome, cpf, id], callback);
-    },
+  update(id, vendedor, callback) {
+    const query = 'UPDATE vendedores SET nome = ?, cpf = ? WHERE id = ?';
+    db.createConnection().query(query, [vendedor.nome, vendedor.cpf, id], callback);
+  }
 
-    // Deletar vendedor por ID
-    delete: (id, callback) => {
-        const query = 'DELETE FROM vendedores WHERE id = ?';
-        db.createConnection().query(query, [id], callback);
-    }
-};
+  delete(id, callback) {
+    const query = 'DELETE FROM vendedores WHERE id = ?';
+    db.createConnection().query(query, [id], callback);
+  }
+}
 
-module.exports = vendedoresDao;
+module.exports = new VendedoresDao();
