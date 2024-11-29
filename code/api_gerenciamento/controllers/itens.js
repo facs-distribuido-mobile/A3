@@ -70,10 +70,10 @@ module.exports = app => {
         } else {
             try {
                 ItemDao.get(idItem, (err, item_cadastrado) => {
-                    if(item_cadastrado.length === 0 || err !== null) {
+                    if(item_cadastrado === null || err !== null) {
                         return res.status(400).send(`Erro: item não encontrado no cadastro!`);
                     }
-
+                    //
                     const item = new Item(newItem.nome, newItem.preco);
                     if(item.nome === undefined || item.preco === undefined) {
                         return res.status(400).send(`Erro: dado de nome e/ou preço incorretos!`);

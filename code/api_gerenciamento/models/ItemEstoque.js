@@ -6,16 +6,17 @@ module.exports = class ItemEstoque {
 
     constructor(idItem, quantidade) {
         const idItemTratado = Number(idItem);
-        const quantidadeTratada = Number(quantidade)
+        const quantidadeTratada = Number(quantidade);
 
         if(idItemTratado
             && typeof (idItemTratado) === 'number') {
             this.id_item = idItemTratado;
         }
 
-        if(quantidadeTratada
+        if(quantidadeTratada !== undefined
             && typeof (quantidadeTratada) === 'number'
-            && middleware.verificaPositivo(quantidadeTratada)) {
+            && quantidadeTratada >= 0)
+        {
             this.quantidade = quantidadeTratada;
         }
     }

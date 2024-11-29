@@ -61,7 +61,7 @@ class ItemEstoqueDao {
     delete(id, callback) {
         let sql = `DELETE FROM estoque WHERE id = ?`;
 
-        dbConnection.createConnection().query(sql, id, (err, item) => {
+        dbConnection.createConnection().query(sql, [id], (err, item) => {
             if(err || item.affectedRows === 0) {
                 callback("Not found", null);
             } else {

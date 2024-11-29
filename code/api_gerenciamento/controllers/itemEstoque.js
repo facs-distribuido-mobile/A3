@@ -1,5 +1,5 @@
-const middleware = require('../middlewares/general');
 const ItemEstoqueDao = require('../dao/ItemEstoqueDao');
+const ItemDao = require('../dao/ItensDao');
 const ItemEstoque = require('../models/ItemEstoque');
 
 module.exports = app => {
@@ -41,7 +41,7 @@ module.exports = app => {
         const newItemEstoque = req.body;
 
         if(newItemEstoque.id_item === undefined || newItemEstoque.quantidade === undefined){
-            res.status(400).send(`Os campos id do Item e quantidade são obrigatórios!`)
+            return res.status(400).send(`Os campos id do Item e quantidade são obrigatórios!`)
         } else {
             try{
                 const itemEstoque = new ItemEstoque(newItemEstoque.id_item, newItemEstoque.quantidade);
@@ -50,14 +50,20 @@ module.exports = app => {
                     return res.status(400).send(`Erro: dados de id do item e/ou quantidade incorretos!`);
                 }
 
-                ItemEstoqueDao.get(itemEstoque.id_item, (err, itens_estoque) => {
-                    if(itens_estoque !== null || err === null) {
-                        return res.status(400).send(`Erro: item já cadastrado no estoque!`);
-                    }  else {
-                        ItemEstoqueDao.adicionar(itemEstoque);
-                        return res.status(200).send(`Item cadastrado no estoque com sucesso:
-                                                id do item: ${itemEstoque.id_item},
-                                                quantidade: ${itemEstoque.quantidade}`);
+                ItemDao.get(itemEstoque.id_item, (err, resultado_item) => {
+                    if(err === null || resultado_item !== null) {
+                        ItemEstoqueDao.get(itemEstoque.id_item, (err, resultado_estoque) => {
+                            if(err === null || resultado_estoque !== null) {
+                                return res.status(400).send(`Erro: item já cadastrado no estoque!`);
+                            } else {
+                                ItemEstoqueDao.adicionar(itemEstoque);
+                                return res.status(200).send(`Item cadastrado no estoque com sucesso:
+                                                                id do item: ${itemEstoque.id_item},
+                                                                quantidade: ${itemEstoque.quantidade}`);
+                            }
+                        })
+                    } else {
+                        return res.status(400).send(`Erro: item não cadastrado no sistema!`);
                     }
                 })
             } catch (err) {
@@ -78,7 +84,7 @@ module.exports = app => {
         }else {
             try {
                 ItemEstoqueDao.get(idItemEstoque, (err, item_estoque) => {
-                    if(item_estoque.length === 0 || err !== null) {
+                    if(item_estoque === null || err !== null) {
                         return res.status(400).send(`Erro: item não encontrado em estoque!`)
                     }
 
