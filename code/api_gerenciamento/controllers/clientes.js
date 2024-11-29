@@ -70,9 +70,9 @@ module.exports = app => {
     });
 
     app.delete('/clientes/:id', (req, res) => {
-        let idNum = req.params.id;
+        const idNum = req.params.id;
 
-        ClientesDao.delete(idNum, (err, cliente) => {
+        ClientesDao.delete(idNum, (err, dbRes) => {
             if (err) {
                 if (err === 'Not found') {
                     return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
