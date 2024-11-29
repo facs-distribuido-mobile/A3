@@ -31,22 +31,27 @@ class ClientesDao {
     }
 
     add(cliente, callback) {
-        //let sql = '';
-        //const parametros = [];
         const sql = 'INSERT INTO clientes(nome, cpf, email) VALUES(?, ?, ?)';
         const parametros = [cliente.nome, cliente.cpf, cliente.email];
-
-        /*if (cliente.id !== undefined) {
-            sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
-            parametros = [cliente.nome, cliente.cpf, cliente.email, cliente.id];
-        } else {
-            sql = 'INSERT INTO clientes(nome, cpf, email) VALUES(?, ?, ?)';
-            parametros = [cliente.nome, cliente.cpf, cliente.email];
-        }*/
 
         DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
             if (err) {
                 callback(err, null);
+            } else {
+                callback(null, dbRes);
+            }
+        });
+    }
+
+    update(id, cliente, callback) {
+        const sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
+        const parametros = [cliente.nome, cliente.cpf, cliente.email, id];
+
+        DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
+            if (err) {
+                callback(err, null);
+            } else if (dbRes.affectedRows === 0) {
+                callback('Not found', null);
             } else {
                 callback(null, dbRes);
             }
