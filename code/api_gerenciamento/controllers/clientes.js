@@ -49,7 +49,7 @@ module.exports = app => {
             return res.status(400).send('Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: "usuario_legal@dominio.com.br".');
         }
 
-        ClientesDao.adicionar(cliente, (err, dbRes) => {
+        ClientesDao.add(cliente, (err, dbRes) => {
             if (err) {
                 if (err.code === 'ER_DUP_ENTRY') {
                     if (err.sqlMessage.slice(-4, -1) === 'cpf') {
