@@ -111,6 +111,49 @@ module.exports = app => {
         });
     });
 
+    app.patch('/clientes/:id', (req, res) => {
+        const idNum = req.params.id;
+        const requisicao = req.body;
+
+        if (requisicao.nome === undefined && requisicao.cpf === undefined && requisicao.email === undefined) {
+            return res.status(400).send('Erro: Esta requisição deve conter os campos nome, CPF ou email.');
+        }
+
+        const cliente = new Cliente(requisicao.nome, requisicao.cpf, requisicao.email);
+        if (requisicao.nome !== undefined && cliente.nome === undefined) {
+            return res.status(400).send('Erro: O valor do campo nome deve ser uma string não-vazia.');
+        }
+        if (requisicao.cpf !== undefined && cliente.cpf === undefined) {
+            return res.status(400).send('Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato "XXXXXXXXXXX" ou "XXX.XXX.XXX-XX".');
+        }
+        if (requisicao.email !== undefined && cliente.email === undefined) {
+            return res.status(400).send('Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: "usuario_legal@dominio.com.br".');
+        }
+
+        ClientesDao.update(idNum, cliente, (err, dbRes) => {
+            if (err) {
+                if (err === 'Not found') {
+                    return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
+                }
+                if (err.code === 'ER_DUP_ENTRY') {
+                    if (err.sqlMessage.slice(-4, -1) === 'cpf') {
+                        return res.status(409).send(`Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.`);
+                    }
+                    if (err.sqlMessage.slice(-6, -1) === 'email') {
+                        return res.status(409).send(`Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.`);
+                    }
+                }
+                console.log(`Erro: ${err}`);
+                return res.status(500).send('Erro: Erro no servidor.');
+            }
+            const mensagemNome = (cliente.nome) ? `nome: ${cliente.nome},\n` : '';
+            const mensagemCpf = (cliente.cpf) ? `CPF: ${cliente.cpf},\n` : '';
+            const mensagemEmail = (cliente.email) ? `email: ${cliente.email},\n` : '';
+            const mensagem = 'Cliente atualizado com sucesso:\n' + mensagemNome + mensagemCpf + mensagemEmail;
+            return res.status(200).send(mensagem.slice(0, -2));
+        });
+    });
+
     app.delete('/clientes/:id', (req, res) => {
         const idNum = req.params.id;
 

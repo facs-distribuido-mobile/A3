@@ -44,8 +44,22 @@ class ClientesDao {
     }
 
     update(id, cliente, callback) {
-        const sql = 'UPDATE clientes SET nome = ?, cpf = ?, email = ? WHERE id = ?';
-        const parametros = [cliente.nome, cliente.cpf, cliente.email, id];
+        let sql = 'UPDATE clientes SET';
+        const parametros = [];
+        if (cliente.nome !== undefined) {
+            sql += ' nome = ?,';
+            parametros.push(cliente.nome);
+        }
+        if (cliente.cpf !== undefined) {
+            sql += ' cpf = ?,';
+            parametros.push(cliente.cpf);
+        }
+        if (cliente.email !== undefined) {
+            sql += ' email = ?,';
+            parametros.push(cliente.email);
+        }
+        sql = sql.slice(0, -1) + ' WHERE id = ?';
+        parametros.push(id);
 
         DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
             if (err) {
