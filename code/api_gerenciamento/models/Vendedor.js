@@ -1,3 +1,5 @@
+const validarCpf = require('../middlewares/validarCpf')
+
 module.exports = class Vendedor {
   constructor(nome, cpf) {
     if (nome && nome.trim()) {
@@ -6,11 +8,11 @@ module.exports = class Vendedor {
       throw new Error('O campo "nome" é obrigatório.');
     }
 
-    const cpfRegex = /^\d{11}$/;
-    if (cpfRegex.test(cpf)) {
-      this.cpf = cpf;
+    const cpfValido = validarCpf(cpf);
+    if (cpfValido) {
+      this.cpf = cpfValido;
     } else {
-      throw new Error('O CPF deve ter exatamente 11 dígitos numéricos.');
+      throw new Error('CPF inválido.');
     }
   }
 
