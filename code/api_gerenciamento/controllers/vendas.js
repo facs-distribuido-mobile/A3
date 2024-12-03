@@ -5,6 +5,7 @@ const VendaDetalhe = require('../models/VendaDetalhe');
 
 module.exports = app => {
     app.get('/vendas', async (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         let vendas;
         try {
             vendas = await VendasDao.getAll();
@@ -31,7 +32,7 @@ module.exports = app => {
         try {
             venda = await VendasDao.get(idNum);
             if (venda === undefined) {
-                return res.status(404).send(`Erro: Venda de id '${idNum}' não encontrada.`);
+                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
             }
         } catch (error) {
             console.log(`Erro: ${error}`);
@@ -51,7 +52,7 @@ module.exports = app => {
             return res.status(400).send('Erro: Esta requisição deve conter os campos id_cliente, id_vendedor, status da venda, e detalhes da venda.');
         }
 
-        const venda = new Venda(requisicao.id_cliente, requisicao.id_vendedor, requisicao.status, requisicao.detalhes);
+        const venda = new Venda(requisicao.id_cliente, requisicao.id_vendedor, requisicao.status);
         if (venda.idCliente === undefined) {
             return res.status(400).send('Erro: O valor do campo id_cliente deve conter um numero inteiro positivo.');
         }
@@ -65,7 +66,6 @@ module.exports = app => {
             return res.status(400).send('Erro: O valor do campo detalhes deve conter uma lista de objetos.');
         }
 
-        const quantidadeAtual = [];
         for (const requisicaoDetalhe of requisicao.detalhes) {
             if (Object.keys(requisicaoDetalhe).length !== 2 || requisicaoDetalhe.id_item === undefined || requisicaoDetalhe.quantidade === undefined) {
                 return res.status(400).send('Erro: Esta requisição deve conter os campos id_item e quantidade.');
@@ -82,16 +82,15 @@ module.exports = app => {
             try {
                 const dbDetalhe = await VendasDetalhesDao.getPrecoQuantidade(detalhe.idItem);
                 if (dbDetalhe === undefined) {
-                    return res.status(409).send(`Erro: Item de id '${detalhe.idItem}' não encontrado.`);
+                    return res.status(409).send(`Erro: Item de id ${detalhe.idItem} não encontrado.`);
                 }
                 if (dbDetalhe.quantidade_atual < detalhe.quantidade) {
-                    return res.status(409).send(`Erro: A quantidade ${detalhe.quantidade} requisitada para o item de id '${detalhe.idItem}' supera a quantidade atual do estoque: ${dbDetalhe.quantidade_atual}.`);
+                    return res.status(409).send(`Erro: A quantidade ${detalhe.quantidade} requisitada para o item de id ${detalhe.idItem} supera a quantidade atual do estoque: ${dbDetalhe.quantidade_atual}.`);
                 }
 
                 detalhe.preco = dbDetalhe.preco;
                 venda.detalhes.push(detalhe);
                 venda.total += detalhe.quantidade * detalhe.preco;
-                quantidadeAtual.push(dbDetalhe.quantidade_atual);
             } catch (error) {
                 console.log(`Erro: ${error}`);
                 return res.status(500).send('Erro: Erro no servidor.');
@@ -105,10 +104,10 @@ module.exports = app => {
         } catch (error) {
             if (error.code === 'ER_NO_REFERENCED_ROW_2') {
                 if (error.message.slice(-17, -9) === 'clientes') {
-                    return res.status(409).send(`Erro: Cliente de id '${venda.idCliente}' não encontrado.`);
+                    return res.status(409).send(`Erro: Cliente de id ${venda.idCliente} não encontrado.`);
                 }
                 if (error.message.slice(-19, -9) === 'vendedores') {
-                    return res.status(409).send(`Erro: Vendedor de id '${venda.idVendedor}' não encontrado.`);
+                    return res.status(409).send(`Erro: Vendedor de id ${venda.idVendedor} não encontrado.`);
                 }
             }
             console.log(`Erro: ${error}`);
@@ -125,10 +124,9 @@ module.exports = app => {
         }
 
         if (venda.status !== 'cancelado') {
-            quantidadeAtual.reverse();
             for (const detalhe of venda.detalhes) {
                 try {
-                    const dbDetalhesRes = await VendasDetalhesDao.estoqueAfterAdd(detalhe, quantidadeAtual.pop());
+                    const dbDetalhesRes = await VendasDetalhesDao.estoqueAfterAddUpdate(detalhe, 'reduzir');
                 } catch (error) {
                     console.log(`Erro: ${error}`);
                     return res.status(500).send('Erro: Erro no servidor.');
@@ -139,6 +137,65 @@ module.exports = app => {
         return res.status(201).send({ mensagem: 'Venda cadastrada com sucesso!', venda });
     });
 
+    const atualizarVenda = async (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        const idNum = req.params.id;
+        const requisicao = req.body;
+
+        if (requisicao.status === undefined) {
+            return res.status(400).send('Erro: Esta requisição deve conter o campo status da venda.');
+        }
+
+        const venda = new Venda(null, null, requisicao.status);
+        if (venda.status === undefined) {
+            return res.status(400).send('Erro: O valor do campo status deve conter uma string de valor "cancelado", "pendente" ou "finalizado".');
+        }
+
+        let dbVenda;
+        try {
+            dbVenda = await VendasDao.get(idNum);
+            if (dbVenda === undefined) {
+                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
+            }
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+            return res.status(500).send('Erro: Erro no servidor.');
+        }
+
+        if (dbVenda.status !== 'pendente') {
+            return res.status(409).send(`Erro: A venda de id ${dbVenda.id} encontra-se no estado "${dbVenda.status}" e não pode ser editada.`);
+        }
+
+        dbVenda.status = venda.status;
+
+        try {
+            const dbRes = await VendasDao.update(idNum, dbVenda);
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+            return res.status(500).send('Erro: Erro no servidor.');
+        }
+
+        dbVenda.detalhes = JSON.parse(dbVenda.detalhes);
+
+        if (dbVenda.status === 'cancelado') {
+            for (const detalhe of dbVenda.detalhes) {
+                detalhe.idItem = detalhe.id_item;
+                try {
+                    const dbRes = await VendasDetalhesDao.estoqueAfterAddUpdate(detalhe, 'incrementar');
+                } catch (error) {
+                    console.log(`Erro: ${error}`);
+                    return res.status(500).send('Erro: Erro no servidor.');
+                }
+            }
+        }
+
+        return res.status(201).send({ mensagem: 'Venda editada com sucesso!', dbVenda });
+    };
+
+    app.put('/vendas/:id', atualizarVenda);
+
+    app.patch('/vendas/:id', atualizarVenda);
+
     app.delete('/vendas/:id', (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
@@ -146,12 +203,12 @@ module.exports = app => {
         VendasDao.delete(idNum, (err, dbRes) => {
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Venda de id '${idNum}' não encontrada.`);
+                    return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
                 }
                 console.log(`Erro: ${err}`);
                 return res.status(500).send('Erro: Erro no servidor.');
             }
-            return res.status(200).send(`Venda de id '${idNum}' excluída com sucesso!`);
+            return res.status(200).send(`Venda de id ${idNum} excluída com sucesso!`);
         });
     });
 }

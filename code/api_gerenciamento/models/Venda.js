@@ -4,7 +4,7 @@ const dataHoraAtualFormatado = require('../middlewares/dataHoraAtualFormatado');
 const { centsToReal }  = require('../middlewares/general');
 
 module.exports = class Venda {
-    constructor(idCliente, idVendedor, status, detalhes) {
+    constructor(idCliente, idVendedor, status) {
         this.idCliente = checarEntradaInteiro(idCliente);
         this.idVendedor = checarEntradaInteiro(idVendedor);
         if (checarEntradaString(status)) {
@@ -12,9 +12,6 @@ module.exports = class Venda {
             if (['cancelado', 'pendente', 'finalizado'].includes(statusFiltrado)) {
                 this.status = statusFiltrado;
             }
-        }
-        if (Array.isArray(detalhes)) {
-            this.detalhes = detalhes;
         }
         this.dataHora = dataHoraAtualFormatado();
         this.detalhes = [];

@@ -5,7 +5,9 @@ class VendasDetalhesDao {
     getPrecoQuantidade(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT preco, quantidade_atual FROM itens INNER JOIN estoque ON itens.id = estoque.id_item WHERE itens.id = ?';
-            DbConnection.createConnection().query(sql, [id], (err, detalhes) => {
+            const parametros = [id];
+
+            DbConnection.createConnection().query(sql, parametros, (err, detalhes) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -30,10 +32,16 @@ class VendasDetalhesDao {
         });
     }
 
-    estoqueAfterAdd(detalhe, quantidadeAtual) {
+    estoqueAfterAddUpdate(detalhe, op) {
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE estoque SET quantidade_atual = ? WHERE id_item = ?';
-            const parametros = [quantidadeAtual - detalhe.quantidade, detalhe.idItem];
+            let sql;
+            if (op === 'reduzir') {
+                sql = 'UPDATE estoque SET quantidade_atual = quantidade_atual - ? WHERE id_item = ?';
+            }
+            if (op === 'incrementar') {
+                sql = 'UPDATE estoque SET quantidade_atual = quantidade_atual + ? WHERE id_item = ?';
+            }
+            const parametros = [detalhe.quantidade, detalhe.idItem];
 
             DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
                 if (err) {
