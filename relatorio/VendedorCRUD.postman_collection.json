@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "623bf75f-512c-4fe0-af41-631e0a1b9072",
+		"name": "Vendedor CRUD",
+		"description": "Collection para testar os diversos endpoints do crud.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40182059"
+	},
+	"item": [
+		{
+			"name": "Buscar todos os vendedores",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/vendedores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vendedores"
+					]
+				},
+				"description": "GET responsavel por listar todos os vendedores ja cadastrados."
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar vendedor pelo ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/vendedores/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vendedores",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				},
+				"description": "GET responsável por procurar um vendedor especificamente pelo seu ID.\n\nSubstitua `:id` pelo ID do vendedor que você quer testar (ex.: `http://localhost:3000/vendedores/1`)."
+			},
+			"response": []
+		},
+		{
+			"name": "Criar novo vendedor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"João Silva\",\r\n  \"cpf\": \"123.456.789-09\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/vendedores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vendedores"
+					]
+				},
+				"description": "POST responsável por cadastrar um novo vendedor."
+			},
+			"response": []
+		},
+		{
+			"name": "Editar vendedor pelo ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"João Santos\",\r\n  \"cpf\": \"987.654.321-00\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/vendedores/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vendedores",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				},
+				"description": "PUT responsável por editar dados de um vendedor especificado pelo seu ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar vendedor pelo ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/vendedores/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vendedores",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				},
+				"description": "DELETE responsável por deletar um vendedor especificado pelo seu ID."
+			},
+			"response": []
+		}
+	]
+}
