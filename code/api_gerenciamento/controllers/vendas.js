@@ -196,19 +196,20 @@ module.exports = app => {
 
     app.patch('/vendas/:id', atualizarVenda);
 
-    app.delete('/vendas/:id', (req, res) => {
+    app.delete('/vendas/:id', async (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
 
-        VendasDao.delete(idNum, (err, dbRes) => {
-            if (err) {
-                if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
-                }
-                console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+        try {
+            const dbRes = await VendasDao.delete(idNum);
+            if (dbRes.affectedRows === 0) {
+                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
             }
-            return res.status(200).send(`Venda de id ${idNum} excluída com sucesso!`);
-        });
+        } catch (error) {
+            console.log(`Erro: ${error}`);
+            return res.status(500).send('Erro: Erro no servidor.');
+        }
+
+        return res.status(200).send(`Venda de id ${idNum} excluída com sucesso!`);
     });
 }

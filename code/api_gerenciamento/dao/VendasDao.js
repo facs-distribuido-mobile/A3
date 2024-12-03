@@ -62,7 +62,19 @@ class VendasDao {
         });
     }
 
-    delete(id, callback) {
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM vendas WHERE id = ?';
+            const parametros = [id];
+
+            DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(dbRes);
+                }
+            });
+        });
         const sql = 'DELETE FROM vendas WHERE id = ?';
 
         DbConnection.createConnection().query(sql, [id], (err, dbRes) => {
