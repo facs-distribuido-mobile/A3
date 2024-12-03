@@ -9,10 +9,7 @@ module.exports = class Cliente {
         }
 
         if (checarEntradaString(cpf)) {
-            let cpfFiltrado = cpf.trim();
-            if (validarCpf(cpfFiltrado)) {
-                this.cpf = cpfFiltrado;
-            }
+            this.cpf = validarCpf(cpf.trim());
         }
 
         if (checarEntradaString(email)) {

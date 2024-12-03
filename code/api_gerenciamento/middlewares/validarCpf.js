@@ -16,11 +16,10 @@ function validarCpf(cpf) {
             verificador %= 11;
             verificador = (verificador < 2) ? 0 : (11 - verificador);
             if (Number(cpf[10]) === verificador) {
-                return true;
+                return cpf;
             }
         }
     }
-    return false;
 }
 
 module.exports = validarCpf;
