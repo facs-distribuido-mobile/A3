@@ -1,7 +1,7 @@
 {
-  "name": "a3",
+  "name": "api_relatorio",
   "version": "1.0.0",
-  "description": "API GERENCIAMENTO - Trabalho A3 da UC Sistemas Distribuídos e Mobile - profs. Adailton e Marivaldo",
+  "description": "API RELATORIO - Trabalho A3 da UC Sistemas Distribuídos e Mobile - profs. Adailton e Marivaldo",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
