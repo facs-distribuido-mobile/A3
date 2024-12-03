@@ -10,7 +10,12 @@
         return intNum;
     }
 
+    function checarEntradaString(entrada) {
+        return typeof entrada === "string" && entrada.trim();
+    }
+
     module.exports = {
         centsToReal,
-        decimalsToInt
+        decimalsToInt,
+        checarEntradaString
     }
