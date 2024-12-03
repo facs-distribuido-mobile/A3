@@ -1,5 +1,6 @@
 const VendedoresDao = require('../dao/vendedoresDao');
 const Vendedor = require('../models/Vendedor');
+const validarCpf = require('../middlewares/validarCpf');
 
 module.exports = (app) => {
   const verificarCpfDuplicado = (cpf, callback) => {
@@ -28,6 +29,11 @@ module.exports = (app) => {
 
   app.post('/vendedores', (req, res) => {
     try {
+      const cpfValidado = validarCpf(req.body.cpf);
+      if (!cpfValidado) {
+        return res.status(400).send({ erro: 'CPF inválido.' });
+      }
+
       const vendedor = Vendedor.criar(req.body);
 
       verificarCpfDuplicado(vendedor.cpf, (err, cpfExiste) => {
@@ -46,6 +52,11 @@ module.exports = (app) => {
 
   app.put('/vendedores/:id', (req, res) => {
     try {
+      const cpfValidado = validarCpf(req.body.cpf);
+      if (!cpfValidado) {
+        return res.status(400).send({ erro: 'CPF inválido.' });
+      }
+
       const vendedor = Vendedor.criar(req.body);
       const { id } = req.params;
 
@@ -55,7 +66,6 @@ module.exports = (app) => {
         verificarCpfDuplicado(vendedor.cpf, (err, cpfExiste) => {
           if (err) return res.status(500).send({ erro: err.message });
 
-          // Permitir atualização caso o CPF seja o mesmo do vendedor atual
           if (cpfExiste && vendedorExistente.cpf !== vendedor.cpf) {
             return res.status(400).send({ erro: 'CPF já cadastrado para outro vendedor.' });
           }
