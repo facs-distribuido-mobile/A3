@@ -23,28 +23,28 @@ CREATE TABLE IF NOT EXISTS estoque (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	id_item INT UNIQUE NOT NULL,
 	quantidade_atual INT NOT NULL,
-	FOREIGN KEY(id_item) REFERENCES itens(id)
+	FOREIGN KEY(id_item) REFERENCES itens(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS vendas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	id_cliente INT NOT NULL,
-	id_vendedor INT NOT NULL,
+	id_cliente INT,
+	id_vendedor INT,
 	data_hora DATETIME NOT NULL,
 	status VARCHAR(100) NOT NULL,
 	total INT NOT NULL,
-	FOREIGN KEY(id_cliente) REFERENCES clientes(id),
-	FOREIGN KEY(id_vendedor) REFERENCES vendedores(id)
+	FOREIGN KEY(id_cliente) REFERENCES clientes(id) ON DELETE SET NULL,
+	FOREIGN KEY(id_vendedor) REFERENCES vendedores(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS vendas_detalhes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	id_venda INT NOT NULL,
-	id_item INT NOT NULL,
+	id_venda INT,
+	id_item INT,
 	quantidade INT NOT NULL,
 	preco INT NOT NULL,
-	FOREIGN KEY(id_venda) REFERENCES vendas(id),
-	FOREIGN KEY(id_item) REFERENCES itens(id)
+	FOREIGN KEY(id_venda) REFERENCES vendas(id) ON DELETE SET NULL,
+	FOREIGN KEY(id_item) REFERENCES itens(id) ON DELETE SET NULL
 );
 
 INSERT INTO clientes (nome, cpf, email)
@@ -138,7 +138,7 @@ INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
 VALUES (1, 5, 2, 1050);
 
 INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
-VALUES (4, 2, '2023-02-28 23:59:59', 'completo', 20213);
+VALUES (4, 2, '2023-02-28 23:59:59', 'finalizado', 20213);
 
 INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
 VALUES (2, 6, 1, 7855);
