@@ -103,10 +103,10 @@ module.exports = app => {
             idInsert = dbVendasRes.insertId;
         } catch (error) {
             if (error.code === 'ER_NO_REFERENCED_ROW_2') {
-                if (error.message.slice(-17, -9) === 'clientes') {
+                if (error.message.includes('`clientes` (`id`)')) {
                     return res.status(409).send(`Erro: Cliente de id ${venda.idCliente} não encontrado.`);
                 }
-                if (error.message.slice(-19, -9) === 'vendedores') {
+                if (error.message.includes('`vendedores` (`id`)')) {
                     return res.status(409).send(`Erro: Vendedor de id ${venda.idVendedor} não encontrado.`);
                 }
             }
