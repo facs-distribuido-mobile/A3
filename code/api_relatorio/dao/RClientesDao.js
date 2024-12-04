@@ -3,31 +3,34 @@ const middlewares = require('../middlewares/general');
 
 class RClientesDao {
 
-    // async getClientById(id) {
-    //     const sql = `SELECT clientes.nome, clientes.email FROM clientes WHERE id = ?`;
-    //     const result = await dbConnection.createConnection().query(sql, id);
-    //     return result.rows;
-    // }
+     getAllProductsByClientId(id, callback) {
+        const sql = `SELECT
+                        clientes.nome as nome_cliente,
+                        clientes.email as email_cliente,
+                        vendas_detalhes.id_venda as id_venda,
+                        vendas_detalhes.quantidade as quantidade_produto,
+                        itens.nome as nome_item,
+                        itens.preco as preco_item
+                    FROM clientes LEFT JOIN vendas ON clientes.id = vendas.id_cliente
+                    LEFT JOIN vendas_detalhes ON vendas.id = vendas_detalhes.id_venda
+                    LEFT JOIN itens ON vendas_detalhes.id_item = itens.id
+                    WHERE vendas.status = 'completo' AND quantidade IS NOT NULL AND clientes.id = ?`
 
-    // getAllProductsByClientId(id, callback) {
-    //     const searchVendas = `SELECT itens.nome, itens.preco
-    //                             FROM itens LEFT JOIN vendas_detalhes ON itens.id = vendas_detalhes.id_item
-    //                                 LEFT JOIN vendas ON vendas_detalhes.id_venda = vendas.id
-    //                                         WHERE vendas.id_cliente = ?`
-    //
-    //     const searchClient = this.getClientById(id).then(value => {
-    //         console.log(value);
-    //     });
-
-
-        // dbConnection.createConnection().query(searchVendas, id, (err, result) => {
-        //     if(err || result === undefined) {
-        //         callback("Not Found", null);
-        //     } else {
-        //         callback(null, result);
-        //     }
-        // })
-    // }
+        dbConnection.createConnection().query(sql, id, (err, result) => {
+            if(err !== null) {
+                callback("Erro ao consultar", null);
+            } else if(result.length === 0) {
+                callback("Not Found: cliente não possui compras completadas", null)
+            } else {
+                if(result.length > 0) {
+                    result.forEach(item => {
+                        item.preco_item = middlewares.centsToReal(item.preco_item)
+                    })
+                }
+                callback(null, result);
+            }
+        })
+    }
 
     getAverageConsumptionById(id, callback) {
         const sql = `SELECT 
@@ -41,9 +44,9 @@ class RClientesDao {
 
         dbConnection.createConnection().query(sql, id, (err, result) => {
             if(err !== null) {
-                callback(`Erro: ao consultar banco de dados`, null);
+                callback(`Erro ao consultar banco de dados`, null);
             } else if (result[0].nome === undefined || result[0].nome === null){
-                callback(`Not Found: cliente não possui vendas completadas`, null);
+                callback(`Not Found: cliente não possui compras completadas`, null);
             } else {
                 if(result.length > 0) {
                     result.forEach(item => {
@@ -67,9 +70,9 @@ class RClientesDao {
 
         dbConnection.createConnection().query(sql, id, (err, resultado) => {
             if(err !== null) {
-                callback(`Erro: ao consultar banco de dados`, null);
+                callback(`Erro ao consultar banco de dados`, null);
             } else if (resultado[0].nome === undefined || resultado[0].nome === null){
-                callback(`Not Found: cliente não possui vendas completadas`, null);
+                callback(`Not Found: cliente não possui compras completadas`, null);
             } else {
                 if(resultado.length > 0) {
                     resultado.forEach(item => {
@@ -96,7 +99,7 @@ class RClientesDao {
 
         dbConnection.createConnection().query(sql, id, (err, result) => {
             if(err !== null) {
-                callback(`Erro no banco de dados`, null);
+                callback(`Erro ao consultar banco de dados`, null);
             } else if(result.length === 0) {
                 callback(`Not Found: cliente não possui compras completadas`, null);
             } else {
