@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "623bf75f-512c-4fe0-af41-631e0a1b9072",
+		"name": "Teste da aplicação",
+		"description": "Collection para testar os diversos endpoints da aplicação.\n\n- Em cada POST segue um exemplo body, onde pode ser feitas alterações\n    \n- Em cada url que necessite de ID é so subistituir o :ID pelo id desejado.\n    \n    - Ex: http://localhost:3000/vendedores/3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40182059"
+	},
+	"item": [
+		{
+			"name": "Vendedor",
+			"item": [
+				{
+					"name": "Listar todos os vendedores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendedores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendedores"
+							]
+						},
+						"description": "GET responsavel por listar todos os vendedores ja cadastrados."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar vendedor pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendedores/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendedores",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						},
+						"description": "GET responsável por procurar um vendedor especificamente pelo seu ID.\n\nSubstitua `:id` pelo ID do vendedor que você quer testar (ex.: `http://localhost:3000/vendedores/1`)."
+					},
+					"response": []
+				},
+				{
+					"name": "Criar novo vendedor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"João Silva\",\r\n  \"cpf\": \"123.456.789-09\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/vendedores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendedores"
+							]
+						},
+						"description": "POST responsável por cadastrar um novo vendedor."
+					},
+					"response": []
+				},
+				{
+					"name": "Editar um vendedor pelo ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"João Silva2\",\r\n  \"cpf\": \"123.456.789-09\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/vendedores/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendedores",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						},
+						"description": "PUT responsável por editar dados de um vendedor especificado pelo seu ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um vendedor pelo ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendedores/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendedores",
+								"16"
+							]
+						},
+						"description": "DELETE responsável por deletar um vendedor especificado pelo seu ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Área destinada a todos os Request referente ao vendedor.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todos os vendedores já cadastrados, informando seu id, nome e cpf\n        \n    - O 2° GET é responsável por apresentar todos os dados de um vendedor especificado por um id.\n        \n- Post\n    \n    - Responsável por cadastar um novo vendedor.\n        \n- Put\n    \n    - Responsável por editar um vendedor especificado por um id.\n        \n- Delete\n    \n    - Responsável por deletar um vendedor especificado por um id."
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Buscar todos os clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar clientes pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/clientes/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clientes",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar novo cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro Henrique\",\r\n    \"cpf\": \"716.558.890-60\",\r\n    \"email\": \"pedrohenrique@email.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar um cliente pelo ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro Henrique2\",\r\n    \"cpf\": \"716.558.890-60\",\r\n    \"email\": \"pedrohenrique@email.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/clientes/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clientes",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um cliente pelo ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/clientes/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clientes",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área destinada a todos os Request referente ao cliente.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todos os clientes já cadastrados informando seu id, nome, cpf e email.\n        \n    - O 2° GET é responsável por apresentar todos os dados de um cliente especificado por um id.\n        \n- Post\n    \n    - Responsável por cadastar um novo cliente.\n        \n- Put\n    \n    - Responsável por editar um cliente especificado por um id.\n        \n- Delete\n    \n    - Responsável por deletar um cliente especificado por um id."
+		},
+		{
+			"name": "Itens",
+			"item": [
+				{
+					"name": "Buscar todos os itens",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/itens",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"itens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar itens pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/itens/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"itens",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar novo item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Hidratande labial\",\r\n    \"preco\": \"12,30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/itens",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"itens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar um item pelo ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Hidratande labial\",\r\n    \"preco\": \"15,60\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/itens/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"itens",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um item pelo ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/itens/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"itens",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área destinada a todos os Request referente ao item.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com dodos os itens já cadastrados, informando seu id, nome e preço.\n        \n    - O 2° GET é responsável por apresentar todos os dados de um item especificado por um id.\n        \n- Post\n    \n    - Responsável por cadastar um novo item para poder gerencia-lo no estoque.\n        \n- Put\n    \n    - Responsável por editar um item especificado por um id.\n        \n- Delete\n    \n    - Responsável por deletar um item especificado por um id."
+		},
+		{
+			"name": "Estoque",
+			"item": [
+				{
+					"name": "Buscar todos os itens do estoque",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/estoque",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estoque"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar itens no estoque pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/estoque/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estoque",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar a quantidade de um item no estoque",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"id_item\": \"\",\r\n        \"quantidade\": \"25\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/estoque",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estoque"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editar a quantidade de um utem no estoque pelo ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"quantidade\": \"10\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/estoque/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estoque",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um item do estoque pelo ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/estoque/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estoque",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área destinada a todos os Request referente aos estoque.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todos os itens do estoque já cadastrados, informando seu id, nome, preço e quantidade.\n        \n    - O 2° GET é responsável por apresentar todos os dados de um item do estoque especificado por um id.\n        \n- Post\n    \n    - Responsável por adicionar novas quantidades de um item no estoque.\n        \n- Put\n    \n    - Responsável por editar a quantidade de um item especificado por um id.\n        \n- Delete\n    \n    - Responsável por deletar um item do estoque especificado por um id."
+		},
+		{
+			"name": "vendas",
+			"item": [
+				{
+					"name": "Listar todas as vendas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar uma venda pelo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendas/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendas",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar uma nova venda",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_cliente\": 5,\r\n  \"id_vendedor\": 2,\r\n  \"status\": \"pendente\",\r\n  \"detalhes\": [\r\n    { \"id_item\": 1, \"quantidade\": 20 },\r\n    { \"id_item\": 2, \"quantidade\": 7 }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/vendas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar status de uma venda pelo ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_cliente\": 5,\r\n  \"id_vendedor\": 2,\r\n  \"status\": \"finalizado\",\r\n  \"detalhes\": [\r\n    { \"id_item\": 1, \"quantidade\": 20 },\r\n    { \"id_item\": 2, \"quantidade\": 7 }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/vendas/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendas",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar uma venda",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/vendas/:ID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vendas",
+								":ID"
+							],
+							"variable": [
+								{
+									"key": "ID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área destinada a todos os Request referente as vendas.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todas as vendas já cadastradas, informando o id da compra, id do cliente, id do vendedor, data e hora da compra, os status da compra, valor total da compra e alguns outros detalhes.\n        \n    - O 2° GET é responsável por apresentar todos dados de uma compra especificada por um id.\n        \n- Post\n    \n    - Responsável por realizar uma nova compra.\n        \n- Put\n    \n    - Responsável por editar uma compra especificada por um id.\n        \n- Delete\n    \n    - Responsável por deletar uma compra especificado por um id."
+		}
+	]
+}
