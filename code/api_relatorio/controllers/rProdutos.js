@@ -1,5 +1,4 @@
 const RProdutosDao = require('../dao/RProdutosDao');
-const ProdutosRelatorio = require('../models/ProdutosRelatorio');
 const middlewares = require('../middlewares/general');
 
 module.exports = app => {

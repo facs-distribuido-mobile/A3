@@ -14,13 +14,13 @@ class RClientesDao {
                     FROM clientes LEFT JOIN vendas ON clientes.id = vendas.id_cliente
                     LEFT JOIN vendas_detalhes ON vendas.id = vendas_detalhes.id_venda
                     LEFT JOIN itens ON vendas_detalhes.id_item = itens.id
-                    WHERE vendas.status = 'completo' AND quantidade IS NOT NULL AND clientes.id = ?`
+                    WHERE vendas.status = 'finalizado' AND quantidade IS NOT NULL AND clientes.id = ?`
 
         dbConnection.createConnection().query(sql, id, (err, result) => {
             if(err !== null) {
                 callback("Erro ao consultar", null);
             } else if(result.length === 0) {
-                callback("Not Found: cliente não possui compras completadas", null)
+                callback("Not Found: cliente não possui compras finalizadas", null)
             } else {
                 if(result.length > 0) {
                     result.forEach(item => {
@@ -40,13 +40,13 @@ class RClientesDao {
                             FROM clientes LEFT JOIN vendas 
                             ON clientes.id = vendas.id_cliente 
                             WHERE clientes.id = ? 
-                            AND vendas.status = 'completo'`
+                            AND vendas.status = 'finalizado'`
 
         dbConnection.createConnection().query(sql, id, (err, result) => {
             if(err !== null) {
                 callback(`Erro ao consultar banco de dados`, null);
             } else if (result[0].nome === undefined || result[0].nome === null){
-                callback(`Not Found: cliente não possui compras completadas`, null);
+                callback(`Not Found: cliente não possui compras finalizadas`, null);
             } else {
                 if(result.length > 0) {
                     result.forEach(item => {
@@ -66,13 +66,13 @@ class RClientesDao {
                             FROM clientes LEFT JOIN vendas 
                             ON clientes.id = vendas.id_cliente 
                             WHERE clientes.id = ? 
-                            AND vendas.status = 'completo'`
+                            AND vendas.status = 'finalizado'`
 
         dbConnection.createConnection().query(sql, id, (err, resultado) => {
             if(err !== null) {
                 callback(`Erro ao consultar banco de dados`, null);
             } else if (resultado[0].nome === undefined || resultado[0].nome === null){
-                callback(`Not Found: cliente não possui compras completadas`, null);
+                callback(`Not Found: cliente não possui compras finalizadas`, null);
             } else {
                 if(resultado.length > 0) {
                     resultado.forEach(item => {
@@ -89,19 +89,20 @@ class RClientesDao {
                                 clientes.nome as cliente, 
                                 clientes.email as email_cliente, 
                                 vendedores.nome as vendedor,
+                                vendas.id as id_venda,
                                 vendas.data_hora,
                                 vendas.status,
                                 vendas.total 
                             FROM clientes LEFT JOIN vendas 
                                 ON clientes.id = vendas.id_cliente 
                                 LEFT JOIN vendedores ON vendas.id_vendedor = vendedores.id 
-                            WHERE vendas.status = 'completo' AND clientes.id = ?`
+                            WHERE vendas.status = 'finalizado' AND clientes.id = ?`
 
         dbConnection.createConnection().query(sql, id, (err, result) => {
             if(err !== null) {
                 callback(`Erro ao consultar banco de dados`, null);
             } else if(result.length === 0) {
-                callback(`Not Found: cliente não possui compras completadas`, null);
+                callback(`Not Found: cliente não possui compras finalizadas`, null);
             } else {
                 if(result.length > 0) {
                     result.forEach(item => {

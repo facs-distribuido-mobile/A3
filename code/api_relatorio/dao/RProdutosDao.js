@@ -12,7 +12,7 @@ class RProdutosDao {
                             FROM vendas_detalhes
                               LEFT JOIN itens ON vendas_detalhes.id_item = itens.id
                               LEFT JOIN vendas ON vendas_detalhes.id_venda = vendas.id
-                            WHERE STATUS = 'completo'
+                            WHERE STATUS = 'finalizado'
                             GROUP BY vendas_detalhes.id_item
                             ORDER BY total_vendas DESC`
 

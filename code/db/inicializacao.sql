@@ -138,7 +138,7 @@ INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
 VALUES (1, 5, 2, 1050);
 
 INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
-VALUES (4, 2, '2023-02-28 23:59:59', 'completo', 20213);
+VALUES (4, 2, '2023-02-28 23:59:59', 'finalizado', 20213);
 
 INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
 VALUES (2, 6, 1, 7855);
