@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "623bf75f-512c-4fe0-af41-631e0a1b9072",
 		"name": "Teste da aplicação",
-		"description": "Collection para testar os diversos endpoints da aplicação.\n\n- Em cada POST segue um exemplo body, onde pode ser feitas alterações\n    \n- Em cada url que necessite de ID é so subistituir o :ID pelo id desejado.\n    \n    - Ex: http://localhost:3000/vendedores/3",
+		"description": "Collection para testar os diversos endpoints da aplicação.\n\n- Em cada requisição segue um exemplo body, onde pode ser feitas alterações\n    \n- Em cada url que necessite de ID é so subistituir o :ID pelo id desejado.\n    \n    - Ex: [http://localhost:3000/vendedores/3](http://localhost:3000/vendedores/3)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40182059"
 	},
@@ -567,7 +567,7 @@
 			"description": "Área destinada a todos os Request referente aos estoque.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todos os itens do estoque já cadastrados, informando seu id, nome, preço e quantidade.\n        \n    - O 2° GET é responsável por apresentar todos os dados de um item do estoque especificado por um id.\n        \n- Post\n    \n    - Responsável por adicionar novas quantidades de um item no estoque.\n        \n- Put\n    \n    - Responsável por editar a quantidade de um item especificado por um id.\n        \n- Delete\n    \n    - Responsável por deletar um item do estoque especificado por um id."
 		},
 		{
-			"name": "vendas",
+			"name": "Vendas",
 			"item": [
 				{
 					"name": "Listar todas as vendas",
@@ -705,6 +705,253 @@
 				}
 			],
 			"description": "Área destinada a todos os Request referente as vendas.\n\n- Get\n    \n    - O 1° GET é responsável por gerar uma lista com todas as vendas já cadastradas, informando o id da compra, id do cliente, id do vendedor, data e hora da compra, os status da compra, valor total da compra e alguns outros detalhes.\n        \n    - O 2° GET é responsável por apresentar todos dados de uma compra especificada por um id.\n        \n- Post\n    \n    - Responsável por realizar uma nova compra.\n        \n- Put\n    \n    - Responsável por editar uma compra especificada por um id.\n        \n- Delete\n    \n    - Responsável por deletar uma compra especificado por um id."
+		},
+		{
+			"name": "Relatórios clientes",
+			"item": [
+				{
+					"name": "Produtos por um cliente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/relatorios/clientes/produtos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"clientes",
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumo média de um cliente pelo ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/relatorios/clientes/consumo-medio/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"clientes",
+								"consumo-medio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consumo total de um cliente pelo ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/relatorios/clientes/consumo-total",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"clientes",
+								"consumo-total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Histórico de compras de um cliente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/relatorios/clientes/compras",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"clientes",
+								"compras"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área responsável por gerar os relatórios dos clientes.\n\n- Get\n    \n    - O 1° GET é responsável por retornar os produtos comprados por um cliente com base no ID do cliente.\n        \n    - O 2° GET é responsável por retornar o consumo médio de um cliente com base nas compras finalizadas.\n        \n    - O 3° GET é responsável por retornar o consumo total de um cliente com base nas compras finalizadas.\n        \n    - O 4° GET é responsável por retornar o histórico de compras de um cliente com base no ID do cliente.\n        \n\n\\*OBS: Segue exemplo de body em cada uma das requisições."
+		},
+		{
+			"name": "Relatórios estoque",
+			"item": [
+				{
+					"name": "Produtos com estoque baixo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3030/relatorios/estoque/baixo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"estoque",
+								"baixo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produtos com estoque zero",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3030/relatorios/estoque/zero",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"estoque",
+								"zero"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área responsável por gerar os relatórios do estoque.\n\n- Get\n    \n    - O 1° GET é responsável por gerar um relatório dos produtos com o estoque baixo.\n        \n    - O 2° GET é responsável por gerar um relatório dos produtos com estoque zerado."
+		},
+		{
+			"name": "Relatórios produtos",
+			"item": [
+				{
+					"name": "Produtos mais vendidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3030/relatorios/produtos/melhor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"produtos",
+								"melhor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produto baseado no seu estado de venda",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"cancelado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3030/relatorios/produtos/outros-status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3030",
+							"path": [
+								"relatorios",
+								"produtos",
+								"outros-status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Área responsável por gerar os relatórios dos produtos.\n\n- Get\n    \n    - O 1° GET é responsável por retornar os produtos mais vendidos com base nas vendas finalizadas.\n        \n    - O 2° GET é responsável por retornar os produtos com base no status da venda (pendente ou cancelada)."
 		}
 	]
 }
