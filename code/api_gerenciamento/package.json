@@ -19,7 +19,6 @@
   "homepage": "https://github.com/facs-distribuido-mobile/A3#readme",
   "dependencies": {
     "consign": "^0.1.6",
-    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mysql": "^2.18.1"
   },

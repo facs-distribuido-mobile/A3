@@ -1,11 +1,14 @@
 version: '3.8'
 
 services:
-  db-farmacia:
-    image: mysql:8.0
-    container_name: db-farmacia
+  farmacia-db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    image: farmacia-db-imagem
+    container_name: farmacia-db
     ports:
-      - "3306:3306"
+      - "3306:3306" #temporario
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -17,13 +20,50 @@ services:
     command: >
       --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
-      - db-farmacia:/var/lib/mysql
+      - farmacia-db-volume:/var/lib/mysql
     networks:
       - app-network
 
+  farmacia-api-gerenciamento:
+    build:
+      context: .
+      dockerfile: Dockerfile-api-gerenciamento
+    image: farmacia-api-gerenciamento-imagem
+    container_name: farmacia-api-gerenciamento
+    ports:
+      - "3000:3000"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT: ${MYSQL_ROOT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PORT: ${MYSQL_PORT}
+    networks:
+      - app-network
+    depends_on:
+      - farmacia-db
+  
+  farmacia-api-relatorio:
+    build:
+      context: .
+      dockerfile: Dockerfile-api-relatorio
+    image: farmacia-api-relatorio-imagem
+    container_name: farmacia-api-relatorio
+    ports:
+      - "3030:3000"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT: ${MYSQL_ROOT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PORT: ${MYSQL_PORT}
+    networks:
+      - app-network
+    depends_on:
+      - farmacia-db
+
 volumes:
-  db-farmacia:
+  farmacia-db-volume:
 
 networks:
   app-network:

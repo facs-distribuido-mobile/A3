@@ -1,5 +1,4 @@
 const mySql = require('mysql');
-require('dotenv').config();
 
 class DbConnection {
 
@@ -13,13 +12,5 @@ class DbConnection {
         });
     }
 }
-
-new DbConnection().createConnection().connect((err) => {
-    if(err) {
-        console.error(`Erro ao conectar o banco de dados`, err);
-        throw err;
-    }
-    console.log(`API de relatórios conectada ao banco de dados`);
-})
 
 module.exports = new DbConnection();

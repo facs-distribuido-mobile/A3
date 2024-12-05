@@ -1,4 +1,4 @@
-const VendedoresDao = require('../dao/vendedoresDao');
+const VendedoresDao = require('../dao/VendedoresDao');
 const Vendedor = require('../models/Vendedor');
 const validarCpf = require('../middlewares/validarCpf');
 
