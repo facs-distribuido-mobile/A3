@@ -10,11 +10,11 @@ module.exports = app => {
         try {
             vendas = await VendasDao.getAll();
             if (vendas.length === 0) {
-                return res.status(404).send('Erro: Nenhuma venda encontrada.');
+                return res.status(404).send({ erro: 'Nenhuma venda encontrada.' });
             }
         } catch (error) {
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
         vendas = vendas.map(venda => {
@@ -32,11 +32,11 @@ module.exports = app => {
         try {
             venda = await VendasDao.get(idNum);
             if (venda === undefined) {
-                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
+                return res.status(404).send({ erro: `Venda de id ${idNum} não encontrada.` });
             }
         } catch (error) {
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
         venda = Venda.conversoes(venda);
@@ -49,43 +49,43 @@ module.exports = app => {
         const requisicao = req.body;
 
         if (Object.keys(requisicao).length !== 4 || requisicao.id_cliente === undefined || requisicao.id_vendedor === undefined || requisicao.status === undefined || requisicao.detalhes === undefined) {
-            return res.status(400).send('Erro: Esta requisição deve conter os campos id_cliente, id_vendedor, status da venda, e detalhes da venda.');
+            return res.status(400).send({ erro: 'Esta requisição deve conter os campos id_cliente, id_vendedor, status da venda, e detalhes da venda.' });
         }
 
         const venda = new Venda(requisicao.id_cliente, requisicao.id_vendedor, requisicao.status);
         if (venda.idCliente === undefined) {
-            return res.status(400).send('Erro: O valor do campo id_cliente deve conter um numero inteiro positivo.');
+            return res.status(400).send({ erro: 'O valor do campo id_cliente deve conter um numero inteiro positivo.' });
         }
         if (venda.idVendedor === undefined) {
-            return res.status(400).send('Erro: O valor do campo id_vendedor deve conter um numero inteiro positivo.');
+            return res.status(400).send({ erro: 'O valor do campo id_vendedor deve conter um numero inteiro positivo.' });
         }
         if (venda.status === undefined) {
-            return res.status(400).send('Erro: O valor do campo status deve conter uma string de valor "cancelado", "pendente" ou "finalizado".');
+            return res.status(400).send({ erro: 'O valor do campo status deve conter uma string de valor "cancelado", "pendente" ou "finalizado".' });
         }
         if (requisicao.detalhes === undefined || !Array.isArray(requisicao.detalhes)) {
-            return res.status(400).send('Erro: O valor do campo detalhes deve conter uma lista de objetos.');
+            return res.status(400).send({ erro: 'O valor do campo detalhes deve conter uma lista de objetos.' });
         }
 
         for (const requisicaoDetalhe of requisicao.detalhes) {
             if (Object.keys(requisicaoDetalhe).length !== 2 || requisicaoDetalhe.id_item === undefined || requisicaoDetalhe.quantidade === undefined) {
-                return res.status(400).send('Erro: Esta requisição deve conter os campos id_item e quantidade.');
+                return res.status(400).send({ erro: 'Esta requisição deve conter os campos id_item e quantidade.' });
             }
 
             const detalhe = new VendaDetalhe(requisicaoDetalhe.id_item, requisicaoDetalhe.quantidade);
             if (detalhe.idItem === undefined) {
-                return res.status(400).send('Erro: O valor do campo id_item deve conter um numero inteiro positivo.');
+                return res.status(400).send({ erro: 'O valor do campo id_item deve conter um numero inteiro positivo.' });
             }
             if (detalhe.quantidade === undefined) {
-                return res.status(400).send('Erro: O valor do campo quantidade deve conter um numero inteiro positivo.');
+                return res.status(400).send({ erro: 'O valor do campo quantidade deve conter um numero inteiro positivo.' });
             }
 
             try {
                 const dbDetalhe = await VendasDetalhesDao.getPrecoQuantidade(detalhe.idItem);
                 if (dbDetalhe === undefined) {
-                    return res.status(409).send(`Erro: Item de id ${detalhe.idItem} não encontrado.`);
+                    return res.status(409).send({ erro: `Item de id ${detalhe.idItem} não encontrado.` });
                 }
                 if (dbDetalhe.quantidade_atual < detalhe.quantidade) {
-                    return res.status(409).send(`Erro: A quantidade ${detalhe.quantidade} requisitada para o item de id ${detalhe.idItem} supera a quantidade atual do estoque: ${dbDetalhe.quantidade_atual}.`);
+                    return res.status(409).send({ erro: `A quantidade ${detalhe.quantidade} requisitada para o item de id ${detalhe.idItem} supera a quantidade atual do estoque: ${dbDetalhe.quantidade_atual}.` });
                 }
 
                 detalhe.preco = dbDetalhe.preco;
@@ -93,7 +93,7 @@ module.exports = app => {
                 venda.total += detalhe.quantidade * detalhe.preco;
             } catch (error) {
                 console.log(`Erro: ${error}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
         }
 
@@ -104,14 +104,14 @@ module.exports = app => {
         } catch (error) {
             if (error.code === 'ER_NO_REFERENCED_ROW_2') {
                 if (error.message.includes('`clientes` (`id`)')) {
-                    return res.status(409).send(`Erro: Cliente de id ${venda.idCliente} não encontrado.`);
+                    return res.status(409).send({ erro: `Cliente de id ${venda.idCliente} não encontrado.` });
                 }
                 if (error.message.includes('`vendedores` (`id`)')) {
-                    return res.status(409).send(`Erro: Vendedor de id ${venda.idVendedor} não encontrado.`);
+                    return res.status(409).send({ erro: `Vendedor de id ${venda.idVendedor} não encontrado.` });
                 }
             }
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
         for (const detalhe of venda.detalhes) {
@@ -119,7 +119,7 @@ module.exports = app => {
                 const dbDetalhesRes = await VendasDetalhesDao.add(idInsert, detalhe);
             } catch (error) {
                 console.log(`Erro: ${error}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
         }
 
@@ -129,7 +129,7 @@ module.exports = app => {
                     const dbDetalhesRes = await VendasDetalhesDao.estoqueAfterAddUpdate(detalhe, 'reduzir');
                 } catch (error) {
                     console.log(`Erro: ${error}`);
-                    return res.status(500).send('Erro: Erro no servidor.');
+                    return res.status(500).send({ erro: 'Erro no servidor.' });
                 }
             }
         }
@@ -143,27 +143,27 @@ module.exports = app => {
         const requisicao = req.body;
 
         if (requisicao.status === undefined) {
-            return res.status(400).send('Erro: Esta requisição deve conter o campo status da venda.');
+            return res.status(400).send({ erro: 'Esta requisição deve conter o campo status da venda.' });
         }
 
         const venda = new Venda(null, null, requisicao.status);
         if (venda.status === undefined) {
-            return res.status(400).send('Erro: O valor do campo status deve conter uma string de valor "cancelado", "pendente" ou "finalizado".');
+            return res.status(400).send({ erro: 'O valor do campo status deve conter uma string de valor \'cancelado\', \'pendente\' ou \'finalizado\'.' });
         }
 
         let dbVenda;
         try {
             dbVenda = await VendasDao.get(idNum);
             if (dbVenda === undefined) {
-                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
+                return res.status(404).send({ erro: `Venda de id ${idNum} não encontrada.` });
             }
         } catch (error) {
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
         if (dbVenda.status !== 'pendente') {
-            return res.status(409).send(`Erro: A venda de id ${dbVenda.id} encontra-se no estado "${dbVenda.status}" e não pode ser editada.`);
+            return res.status(409).send({ erro: `A venda de id ${dbVenda.id} encontra-se no estado "${dbVenda.status}" e não pode ser editada.` });
         }
 
         dbVenda.status = venda.status;
@@ -172,7 +172,7 @@ module.exports = app => {
             const dbRes = await VendasDao.update(idNum, dbVenda);
         } catch (error) {
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
         dbVenda.detalhes = JSON.parse(dbVenda.detalhes);
@@ -184,12 +184,12 @@ module.exports = app => {
                     const dbRes = await VendasDetalhesDao.estoqueAfterAddUpdate(detalhe, 'incrementar');
                 } catch (error) {
                     console.log(`Erro: ${error}`);
-                    return res.status(500).send('Erro: Erro no servidor.');
+                    return res.status(500).send({ erro: 'Erro no servidor.' });
                 }
             }
         }
 
-        return res.status(201).send({ mensagem: 'Venda editada com sucesso!', dbVenda });
+        return res.status(200).send({ mensagem: 'Venda atualizada com sucesso!', id: idNum, dbVenda });
     };
 
     app.put('/vendas/:id', atualizarVenda);
@@ -203,13 +203,13 @@ module.exports = app => {
         try {
             const dbRes = await VendasDao.delete(idNum);
             if (dbRes.affectedRows === 0) {
-                return res.status(404).send(`Erro: Venda de id ${idNum} não encontrada.`);
+                return res.status(404).send({ erro: `Venda de id ${idNum} não encontrada.` });
             }
         } catch (error) {
             console.log(`Erro: ${error}`);
-            return res.status(500).send('Erro: Erro no servidor.');
+            return res.status(500).send({ erro: 'Erro no servidor.' });
         }
 
-        return res.status(200).send(`Venda de id ${idNum} excluída com sucesso!`);
+        return res.status(200).send({ mensagem: `Venda de id ${idNum} excluída com sucesso!`});
     });
 }

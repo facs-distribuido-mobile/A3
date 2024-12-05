@@ -4,8 +4,9 @@ class ClientesDao {
 
     getAll(callback) {
         const sql = 'SELECT * FROM clientes';
+        const parametros = [];
 
-        DbConnection.createConnection().query(sql, [], (err, clientes) => {
+        DbConnection.createConnection().query(sql, parametros, (err, clientes) => {
             if (err) {
                 callback(err, null);
             } else if (clientes.length === 0) {
@@ -18,8 +19,9 @@ class ClientesDao {
 
     get(id, callback) {
         const sql = 'SELECT * FROM clientes WHERE id = ?';
+        const parametros = [id];
 
-        DbConnection.createConnection().query(sql, [id], (err, clientes) => {
+        DbConnection.createConnection().query(sql, parametros, (err, clientes) => {
             if (err) {
                 callback(err, null);
             } else if (clientes.length === 0) {
@@ -74,8 +76,9 @@ class ClientesDao {
 
     delete(id, callback) {
         const sql = 'DELETE FROM clientes WHERE id = ?';
+        const parametros = [id];
 
-        DbConnection.createConnection().query(sql, [id], (err, dbRes) => {
+        DbConnection.createConnection().query(sql, parametros, (err, dbRes) => {
             if (err) {
                 callback(err, null);
             } else if (dbRes.affectedRows === 0) {

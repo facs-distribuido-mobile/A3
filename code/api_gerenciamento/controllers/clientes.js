@@ -3,165 +3,164 @@ const Cliente = require('../models/Cliente');
 
 module.exports = app => {
     app.get('/clientes', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         ClientesDao.getAll((err, clientes) => {
-            res.header("Access-Control-Allow-Origin", "*");
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send('Erro: Nenhum cliente encontrado.');
+                    return res.status(404).send({ erro: 'Erro: Nenhum cliente encontrado.' });
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
             return res.status(200).send(clientes);
         });
     });
 
     app.get('/clientes/:id', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
         
         ClientesDao.get(idNum, (err, cliente) => {
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
+                    return res.status(404).send({ erro: `Erro: Cliente de id '${idNum}' não encontrado.` });
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
             return res.status(200).send(cliente);
         });
     });
 
     app.post('/clientes', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const requisicao = req.body;
 
         if (Object.keys(requisicao).length !== 3 || requisicao.nome === undefined || requisicao.cpf === undefined || requisicao.email === undefined) {
-            return res.status(400).send('Erro: Esta requisição deve conter os campos nome, CPF e email apenas.');
+            return res.status(400).send({ erro: 'Erro: Esta requisição deve conter os campos nome, CPF e email apenas.' });
         }
 
         const cliente = new Cliente(requisicao.nome, requisicao.cpf, requisicao.email);
         if (cliente.nome === undefined) {
-            return res.status(400).send('Erro: O valor do campo nome deve ser uma string não-vazia.');
+            return res.status(400).send({ erro: 'Erro: O valor do campo nome deve ser uma string não-vazia.' });
         }
         if (cliente.cpf === undefined) {
-            return res.status(400).send('Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato "XXXXXXXXXXX" ou "XXX.XXX.XXX-XX".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato \'XXXXXXXXXXX\' ou \'XXX.XXX.XXX-XX\'.' });
         }
         if (cliente.email === undefined) {
-            return res.status(400).send('Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: "usuario_legal@dominio.com.br".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: \'usuario_legal@dominio.com.br\'.' });
         }
 
         ClientesDao.add(cliente, (err, dbRes) => {
             if (err) {
                 if (err.code === 'ER_DUP_ENTRY') {
-                    if (err.sqlMessage.slice(-4, -1) === 'cpf') {
-                        return res.status(409).send(`Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.cpf')) {
+                        return res.status(409).send({ erro: `Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.` });
                     }
-                    if (err.sqlMessage.slice(-6, -1) === 'email') {
-                        return res.status(409).send(`Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.email')) {
+                        return res.status(409).send({ erro: `Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.` });
                     }
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
-            const mensagem = `Cliente cadastrado com sucesso:\nnome: ${cliente.nome},\nCPF: ${cliente.cpf},\nemail: ${cliente.email}`;
-            return res.status(200).send(mensagem);
+            return res.status(201).send({ mensagem: 'Cliente cadastrado com sucesso!', cliente });
         });
     });
 
     app.put('/clientes/:id', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
         const requisicao = req.body;
 
         if (Object.keys(requisicao).length !== 3 || requisicao.nome === undefined || requisicao.cpf === undefined || requisicao.email === undefined) {
-            return res.status(400).send('Erro: Esta requisição deve conter os campos nome, CPF e email apenas.');
+            return res.status(400).send({ erro: 'Erro: Esta requisição deve conter os campos nome, CPF e email apenas.' });
         }
 
         const cliente = new Cliente(requisicao.nome, requisicao.cpf, requisicao.email);
         if (cliente.nome === undefined) {
-            return res.status(400).send('Erro: O valor do campo nome deve ser uma string não-vazia.');
+            return res.status(400).send({ erro: 'Erro: O valor do campo nome deve ser uma string não-vazia.' });
         }
         if (cliente.cpf === undefined) {
-            return res.status(400).send('Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato "XXXXXXXXXXX" ou "XXX.XXX.XXX-XX".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato \'XXXXXXXXXXX\' ou \'XXX.XXX.XXX-XX\'.' });
         }
         if (cliente.email === undefined) {
-            return res.status(400).send('Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: "usuario_legal@dominio.com.br".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: \'usuario_legal@dominio.com.br\'.' });
         }
 
         ClientesDao.update(idNum, cliente, (err, dbRes) => {
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
+                    return res.status(404).send({ erro: `Erro: Cliente de id '${idNum}' não encontrado.` });
                 }
                 if (err.code === 'ER_DUP_ENTRY') {
-                    if (err.sqlMessage.slice(-4, -1) === 'cpf') {
-                        return res.status(409).send(`Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.cpf')) {
+                        return res.status(409).send({ erro: `Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.` });
                     }
-                    if (err.sqlMessage.slice(-6, -1) === 'email') {
-                        return res.status(409).send(`Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.email')) {
+                        return res.status(409).send({ erro: `Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.` });
                     }
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
-            const mensagem = `Cliente atualizado com sucesso:\nnome: ${cliente.nome},\nCPF: ${cliente.cpf},\nemail: ${cliente.email}`;
-            return res.status(200).send(mensagem);
+            return res.status(200).send({ mensagem: 'Cliente atualizado com sucesso!', id: idNum, cliente });
         });
     });
 
     app.patch('/clientes/:id', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
         const requisicao = req.body;
 
         if (requisicao.nome === undefined && requisicao.cpf === undefined && requisicao.email === undefined) {
-            return res.status(400).send('Erro: Esta requisição deve conter os campos nome, CPF ou email.');
+            return res.status(400).send({ erro: 'Erro: Esta requisição deve conter os campos nome, CPF ou email.' });
         }
 
         const cliente = new Cliente(requisicao.nome, requisicao.cpf, requisicao.email);
         if (requisicao.nome !== undefined && cliente.nome === undefined) {
-            return res.status(400).send('Erro: O valor do campo nome deve ser uma string não-vazia.');
+            return res.status(400).send({ erro: 'Erro: O valor do campo nome deve ser uma string não-vazia.' });
         }
         if (requisicao.cpf !== undefined && cliente.cpf === undefined) {
-            return res.status(400).send('Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato "XXXXXXXXXXX" ou "XXX.XXX.XXX-XX".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo CPF deve conter uma string de um CPF válido, no formato \'XXXXXXXXXXX\' ou \'XXX.XXX.XXX-XX\'.' });
         }
         if (requisicao.email !== undefined && cliente.email === undefined) {
-            return res.status(400).send('Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: "usuario_legal@dominio.com.br".');
+            return res.status(400).send({ erro: 'Erro: O valor do campo email deve conter uma string de um email válido. Exemplo: \'usuario_legal@dominio.com.br\'.' });
         }
 
         ClientesDao.update(idNum, cliente, (err, dbRes) => {
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
+                    return res.status(404).send({ erro: `Erro: Cliente de id '${idNum}' não encontrado.` });
                 }
                 if (err.code === 'ER_DUP_ENTRY') {
-                    if (err.sqlMessage.slice(-4, -1) === 'cpf') {
-                        return res.status(409).send(`Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.cpf')) {
+                        return res.status(409).send({ erro: `Erro: O CPF '${cliente.cpf}' já está cadastrado e não pode ser repetido.` });
                     }
-                    if (err.sqlMessage.slice(-6, -1) === 'email') {
-                        return res.status(409).send(`Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.`);
+                    if (err.message.includes('clientes.email')) {
+                        return res.status(409).send({ erro: `Erro: O email '${cliente.email}' já está cadastrado e não pode ser repetido.` });
                     }
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro: 'Erro no servidor.' });
             }
-            const mensagemNome = (cliente.nome) ? `nome: ${cliente.nome},\n` : '';
-            const mensagemCpf = (cliente.cpf) ? `CPF: ${cliente.cpf},\n` : '';
-            const mensagemEmail = (cliente.email) ? `email: ${cliente.email},\n` : '';
-            const mensagem = 'Cliente atualizado com sucesso:\n' + mensagemNome + mensagemCpf + mensagemEmail;
-            return res.status(200).send(mensagem.slice(0, -2));
+            return res.status(200).send({ mensagem: 'Cliente atualizado com sucesso!', id: idNum, cliente });
         });
     });
 
     app.delete('/clientes/:id', (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const idNum = req.params.id;
 
         ClientesDao.delete(idNum, (err, dbRes) => {
             if (err) {
                 if (err === 'Not found') {
-                    return res.status(404).send(`Erro: Cliente de id '${idNum}' não encontrado.`);
+                    return res.status(404).send({ erro: `Erro: Cliente de id '${idNum}' não encontrado.` });
                 }
                 console.log(`Erro: ${err}`);
-                return res.status(500).send('Erro: Erro no servidor.');
+                return res.status(500).send({ erro:'Erro no servidor.'  });
             }
-            return res.status(200).send(`Cliente de id '${idNum}' excluído com sucesso!`);
+            return res.status(200).send({ mensagem: `Cliente de id '${idNum}' excluído com sucesso!`});
         });
     });
 }
