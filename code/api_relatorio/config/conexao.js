@@ -3,7 +3,7 @@ require('dotenv').config();
 
 class DbConnection {
 
-    createConnection(){
+    createConnection() {
         return mySql.createConnection({
             host: process.env.MYSQL_HOST,
             user: process.env.MYSQL_ROOT,
@@ -19,7 +19,7 @@ new DbConnection().createConnection().connect((err) => {
         console.error(`Erro ao conectar o banco de dados`, err);
         throw err;
     }
-    console.log(`API de gerenciamento conectada ao banco de dados`);
+    console.log(`API de relatórios conectada ao banco de dados`);
 })
 
 module.exports = new DbConnection();
