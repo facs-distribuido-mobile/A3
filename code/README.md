@@ -1,5 +1,7 @@
 # Instruções
 
+Aviso: os arquivos .env contêm informações sensíveis e não devem ser commitados. Mas, neste caso, abriu-se uma exceção para facilitar a avaliação.
+
 Para ativar o ambiente docker, utilize o comando (nesta pasta!):
 
 ```
@@ -29,5 +31,3 @@ Para deletar os containers, imagens e volumes relacionados (ação destrutiva):
 ```
 docker compose down --volumes --rmi all
 ```
-
-Nota: os arquivos .env contêm informações sensíveis e não devem ser commitados, mas, neste caso abriu-se uma exceção para facilitar a avaliação.
