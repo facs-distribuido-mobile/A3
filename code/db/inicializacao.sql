@@ -154,3 +154,12 @@ VALUES (5, 2, '2023-12-25 06:07:33', 'cancelado', 493500);
 
 INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
 VALUES (3, 1, 100, 493500);
+
+INSERT INTO vendas (id_cliente, id_vendedor, data_hora, status, total)
+VALUES (2, 1, '2023-12-10 08:07:53', 'finalizado', 11855);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (4, 2, 2, 4000);
+
+INSERT INTO vendas_detalhes (id_venda, id_item, quantidade, preco)
+VALUES (4, 6, 1, 7855);
