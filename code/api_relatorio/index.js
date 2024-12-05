@@ -3,7 +3,7 @@ const consign = require('consign');
 
 const app = express();
 app.use(express.json());
-const portNum = 3030;
+const portNum = 3000;
 
 consign()
         .include('./controllers')

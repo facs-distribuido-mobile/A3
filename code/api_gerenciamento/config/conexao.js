@@ -1,9 +1,8 @@
 const mySql = require('mysql');
-require('dotenv').config();
 
 class DbConnection {
 
-    createConnection(){
+    createConnection() {
         return mySql.createConnection({
             host: process.env.MYSQL_HOST,
             user: process.env.MYSQL_ROOT,
@@ -13,13 +12,5 @@ class DbConnection {
         });
     }
 }
-
-new DbConnection().createConnection().connect((err) => {
-    if(err) {
-        console.error(`Erro ao conectar o banco de dados`, err);
-        throw err;
-    }
-    console.log(`API de gerenciamento conectada ao banco de dados`);
-})
 
 module.exports = new DbConnection();
