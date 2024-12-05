@@ -75,17 +75,6 @@ class VendasDao {
                 }
             });
         });
-        const sql = 'DELETE FROM vendas WHERE id = ?';
-
-        DbConnection.createConnection().query(sql, [id], (err, dbRes) => {
-            if (err) {
-                callback(err, null);
-            } else if (dbRes.affectedRows === 0) {
-                callback('Not found', null);
-            } else {
-                callback(null, dbRes);
-            }
-        });
     }
 
 }
