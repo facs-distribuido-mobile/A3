@@ -10,7 +10,7 @@
 
 ### Professores: Adailton de Jesus Cerqueira Jr. e Marivaldo Pereira Santos.
 
-<ins>Link para repositório da documentação:  </ins>
+<ins>Link para repositório da documentação:  https://github.com/facs-distribuido-mobile/A3/tree/main/relatorio </ins>
 
-<ins>Link oara repositório de código: </ins>
+<ins>Link oara repositório de código: https://github.com/facs-distribuido-mobile/A3/tree/main/code </ins>
 
