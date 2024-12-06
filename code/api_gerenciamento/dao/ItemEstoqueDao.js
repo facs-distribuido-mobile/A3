@@ -4,7 +4,7 @@ const middleware = require('../middlewares/general');
 class ItemEstoqueDao {
 
     total(callback) {
-        let sql = `SELECT count(*) as count FROM estoque`;
+        const sql = `SELECT count(*) as count FROM estoque`;
 
         dbConnection.createConnection().query(sql, [], (err, total) => {
             if (err || total === undefined) {
@@ -12,11 +12,11 @@ class ItemEstoqueDao {
             } else {
                 callback(null, total.count);
             }
-        })
+        });
     }
 
     all(callback) {
-        let sql = `SELECT estoque.id, itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id`;
+        const sql = `SELECT estoque.id, itens.nome, itens.preco, estoque.quantidade_atual FROM estoque LEFT JOIN itens on estoque.id_item = itens.id`;
 
         dbConnection.createConnection().query(sql, [], (err, itens_estoque) => {
             if(err || itens_estoque === undefined) {
@@ -25,9 +25,9 @@ class ItemEstoqueDao {
                 itens_estoque.forEach(item_estoque => {
                     item_estoque.preco = middleware.centsToReal(item_estoque.preco)
                 });
-                callback(null, itens_estoque)
+                callback(null, itens_estoque);
             }
-        })
+        });
     }
 
     get(id, callback) {
@@ -41,7 +41,7 @@ class ItemEstoqueDao {
                 itens_estoque[0].preco = middleware.centsToReal(itens_estoque[0].preco);
                 callback(null, itens_estoque[0]);
             }
-        })
+        });
     }
 
     adicionar(item_estoque) {
@@ -59,7 +59,7 @@ class ItemEstoqueDao {
     }
 
     delete(id, callback) {
-        let sql = `DELETE FROM estoque WHERE id = ?`;
+        const sql = `DELETE FROM estoque WHERE id = ?`;
 
         dbConnection.createConnection().query(sql, [id], (err, item) => {
             if(err || item.affectedRows === 0) {
@@ -67,7 +67,7 @@ class ItemEstoqueDao {
             } else {
                 callback(null, item);
             }
-        })
+        });
     }
 
 }
