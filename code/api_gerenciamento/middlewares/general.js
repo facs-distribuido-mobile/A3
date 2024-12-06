@@ -18,7 +18,7 @@
 
     function centsToReal(num) {
         let temp = Number((num/100).toFixed(2));
-        let result = temp.toLocaleString();
+        let result = temp.toLocaleString('pt-BR');
         return result;
     }
 
