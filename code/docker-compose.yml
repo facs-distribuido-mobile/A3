@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile-db
     image: farmacia-db-imagem
     container_name: farmacia-db
-    ports:
-      - "3306:3306" #temporario
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
